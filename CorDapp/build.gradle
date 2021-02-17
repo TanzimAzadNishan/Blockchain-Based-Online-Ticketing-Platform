@@ -45,6 +45,10 @@ apply plugin: 'net.corda.plugins.cordapp'
 apply plugin: 'net.corda.plugins.cordformation'
 apply plugin: 'net.corda.plugins.quasar-utils'
 
+configurations {
+    braid
+}
+
 
 dependencies {
     cordaCompile "$corda_release_group:corda-core:$corda_release_version"
@@ -56,6 +60,9 @@ dependencies {
     testCompileClasspath fileTree(dir: 'lib/dependencies', include: '*.jar')
     testCompile "$corda_release_group:corda-node-driver:$corda_release_version"
     testCompile "$corda_release_group:corda-test-utils:$corda_release_version"
+	
+	//Braid
+    braid 'io.bluebank.braid:braid-server:4.1.2-RC13'
 }
 
 tasks.withType(JavaCompile) {
@@ -99,9 +106,9 @@ cordapp {
 
 task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
     //Java version check
-    if (JavaVersion.current() != JavaVersion.VERSION_1_8){
+    /*if (JavaVersion.current() != JavaVersion.VERSION_1_8){
         throw new GradleException("This build must be run with java 8")
-    }
+    }*/
     nodeDefaults {
         projectCordapp { deploy = true }
     }
@@ -143,3 +150,55 @@ task deployNodes(type: net.corda.plugins.Cordform, dependsOn: ['jar']) {
         rpcUsers = [[user: "user1", password: "test", permissions: ["ALL"]]]
     }
 }
+
+/*
+ * The following is required for now, while Braid Server OpenAPI server is not
+ * integrated with the gradle corda plugin
+ */
+
+task startBraidPartyA {
+    doLast {
+        startBraid("PartyA", "localhost:10004", 9004)
+    }
+}
+
+task startBraidPartyB {
+    doLast {
+        startBraid("PartyB", "localhost:10009", 9009)
+    }
+}
+
+def startBraid(partyName, rpcHostAndPort, port) {
+    println("starting braid for $partyName with rpc $rpcHostAndPort and port $port ")
+    def partyDirectory = "build/nodes/${partyName}"
+    def cordappDirectory = "${partyDirectory}/cordapps"
+    // the following two effectively forces authentication via the REST API by passing
+    // empty strings for user and password. replace this with "user1" and "test" to
+    // automatically auth with node. N.B. configuring a username and password for RPC
+    // disables the security at the REST API and is NOT secure!
+    def rpcuser = "user1"
+    // empty string
+    def rpcpassword = "test"
+    // empty string
+    def braidPath = braidServerPath()
+    javaexec {
+        systemProperty "file.encoding", "UTF-8"
+        // need this for braid to work with Windows at present
+        main = "-jar"
+        args = [
+                braidPath,
+                rpcHostAndPort,
+                rpcuser,
+                rpcpassword,
+                port,
+                3, // openapi v3 only supported
+                cordappDirectory
+        ]
+    }
+}
+
+def braidServerPath() {
+    // we just use the location of the braid-server dependency
+    return configurations.braid.first()
+}
+
