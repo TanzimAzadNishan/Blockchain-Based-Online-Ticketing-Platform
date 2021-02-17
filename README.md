@@ -9,7 +9,7 @@
 
 
 
-##### How to add Braid to your project
+## How to add Braid to your project
 In build.gradle
 Step 1: Add Braid to your dependencies
 ```
@@ -59,7 +59,7 @@ task startBraidPartyA {
 Now, You will be able to run ```gradlew.bat startBraidPartyA``` to start the Braid Server.
 
 
-##### Commands To Run Network (Windows):
+## Commands To Run Network (Windows):
 ### Install OpenApi
 ```
 npm install @openapitools/openapi-generator-cli -g
@@ -93,7 +93,7 @@ npx @openapitools/openapi-generator-cli generate -i http://localhost:9004/swagge
 
 Now, drop this API library into your desired front-end framework, and now you can call the functions just as a normal API Library call!
 
-##### Quick fix 
+## Quick fix 
 with the current braid build: If you are doing the code-gen yourself, you need to change:
 
 Line#62 in NetworkApi.js needs to be change from 'x500-name': opts['x500Name'] to 'x500-name': opts['x500-name'] or change it at the tableList.js.
