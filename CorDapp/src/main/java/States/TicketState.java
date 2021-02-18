@@ -1,7 +1,10 @@
 package States;
 
+import com.google.common.collect.ImmutableList;
 import net.corda.core.contracts.Amount;
 import net.corda.core.contracts.ContractState;
+import net.corda.core.contracts.LinearState;
+import net.corda.core.contracts.UniqueIdentifier;
 import net.corda.core.identity.AbstractParty;
 import net.corda.core.identity.Party;
 import org.jetbrains.annotations.NotNull;
@@ -9,17 +12,24 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Currency;
 import java.util.List;
 
-public class TicketState implements ContractState {
+public class TicketState implements ContractState, LinearState {
     // The attributes that will be stored on the ledger as part of the state.
     private Party currentOwner;
     private Party ticketIssuer;
     private Amount<Currency> price;
-    private String ticketHash;
+    //private String ticketHash;
     private String eventDate;
+    private UniqueIdentifier linearId;
 
     @NotNull
     @Override
     public List<AbstractParty> getParticipants() {
-        return null;
+        return ImmutableList.of(currentOwner, ticketIssuer);
+    }
+
+    @NotNull
+    @Override
+    public UniqueIdentifier getLinearId() {
+        return linearId;
     }
 }

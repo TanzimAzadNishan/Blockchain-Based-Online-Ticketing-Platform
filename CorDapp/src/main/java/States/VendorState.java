@@ -1,5 +1,6 @@
 package States;
 
+import com.google.common.collect.ImmutableList;
 import net.corda.core.contracts.ContractState;
 import net.corda.core.identity.AbstractParty;
 import net.corda.core.identity.Party;
@@ -18,6 +19,6 @@ public class VendorState implements ContractState {
     @NotNull
     @Override
     public List<AbstractParty> getParticipants() {
-        return null;
+        return ImmutableList.of(agency);
     }
 }
