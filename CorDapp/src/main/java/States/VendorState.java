@@ -17,6 +17,30 @@ public class VendorState implements ContractState {
     private int noOfOrganizedEvents;
     private List<EventState> allEvents;
 
+    public Party getAgency() {
+        return agency;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public int getTotalSales() {
+        return totalSales;
+    }
+
+    public int getNoOfOrganizedEvents() {
+        return noOfOrganizedEvents;
+    }
+
+    public List<EventState> getAllEvents() {
+        return allEvents;
+    }
+
     @NotNull
     @Override
     public List<AbstractParty> getParticipants() {

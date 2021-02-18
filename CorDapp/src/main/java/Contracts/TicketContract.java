@@ -44,7 +44,9 @@ public class TicketContract implements Contract {
 
                 req.using("Issuer must be required singer.",
                         requiredSigners.contains(outputState.getTicketIssuer().getOwningKey()));
-                req.using("Amount must be positive.", outputState.getPrice() > 0);
+                req.using("Price must be positive.", outputState.getPrice() > 0);
+                req.using("Refund Amount must be positive.", outputState.getRefundAmount() > 0);
+                req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
 
                 return null;
             });
