@@ -1,5 +1,11 @@
 from django.db import models
 
+from django.shortcuts import render, redirect
+from django.views import View
+from django.contrib import messages
+
+from ticketuser.models import TicketUser
+
 import hashlib
 
 
@@ -11,6 +17,7 @@ class Vendor(models.Model):
 
     vendor_name = models.TextField(null=False)
     vendor_type = models.TextField(null=False)
+    # contact = models.TextField(null=False)
     unique_hash = models.TextField()
 
     def __init__(self):

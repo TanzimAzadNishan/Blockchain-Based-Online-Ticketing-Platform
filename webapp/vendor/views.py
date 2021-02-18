@@ -1,20 +1,43 @@
-from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+import hashlib
+import jwt
+import threading
+
+from datetime import datetime, timedelta
 from django.contrib import messages
 
+from django.views import View
+from django.contrib import messages
+from django.shortcuts import render, redirect, HttpResponse
+from .models import Vendor
 
-def vendorSignUp(request):
-        return render(request, 'vendor/vendorSignUp.html')
 
-def handleSignUp(request):
+class VendorRegisterView(View):
 
-        if(request.method == 'POST'):
-            vendorEmail= request.POST['vendorEmail']
-            vendorEmail= request.POST['vendorEmail']
-            vendorPassword = request.POST['vendorPassword']
-            vendorAddress = request.POST['vendorAddress']
+    def get(self, request):
+            return render(request, 'vendor/vendorSignUp.html')
 
-        print(vendorName, vendorEmail, vendorPassword)
+    def post(self, request):
+
+        email = request.POST.get('email')
+        password = request.POST.get('pass1')
+        password_confirm = request.POST.get('pass2')
+        vendor_type = request.POST.get('vendor_type')
+
+        name = request.POST.get('name')
+
+        vendorCheck = Vendor.objects.filter(vendor_name=name) | Vendor.objects.filter(email=email)
+
+        if vendorCheck:
+            messages.error(request, "already taken")
+            return redirect('vendor-signup-view')
+
+        if (password != password_confirm):
+                messages.warning(request, 'PassWords do not match!')
+                return redirect('vendor-signup-view')
         
-        return HttpResponse('signup successful')
+        vendor_obj = Vendor(vendor_name=name, email=email, password=password, vendor_type= vendor_type)
+        vendor_obj.save()
+
+        return HttpResponse('SignUp Completed!')
+
+        
