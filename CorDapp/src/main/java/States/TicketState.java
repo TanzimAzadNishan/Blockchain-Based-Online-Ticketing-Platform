@@ -16,10 +16,26 @@ public class TicketState implements ContractState, LinearState {
     // The attributes that will be stored on the ledger as part of the state.
     private Party currentOwner;
     private Party ticketIssuer;
-    private Amount<Currency> price;
+    private int price;
     //private String ticketHash;
     private String eventDate;
     private UniqueIdentifier linearId;
+
+    public Party getCurrentOwner() {
+        return currentOwner;
+    }
+
+    public Party getTicketIssuer() {
+        return ticketIssuer;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public String getEventDate() {
+        return eventDate;
+    }
 
     @NotNull
     @Override
