@@ -25,7 +25,7 @@ public class TicketState implements ContractState, LinearState {
 
 
     @ConstructorForDeserialization
-    public TicketState(Party currentOwner, Party ticketIssuer, int price, int refundAmount, String eventDate, UniqueIdentifier linearId) {
+    private TicketState(Party currentOwner, Party ticketIssuer, int price, int refundAmount, String eventDate, UniqueIdentifier linearId) {
         this.currentOwner = currentOwner;
         this.ticketIssuer = ticketIssuer;
         this.price = price;
