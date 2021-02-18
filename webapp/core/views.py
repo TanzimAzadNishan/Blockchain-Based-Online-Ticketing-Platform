@@ -22,47 +22,44 @@ class UserLoginView(View):
         user_type = request.POST.get('user_type')
 
         if user_type == "ticket_user":
-            
-            ticket_user = TicketUser.objects.get(email=email)
+            ticket_user = TicketUser.objects.filter(email=email)
 
-            if ticket_user is None:
+            if len(ticket_user) == 0:
                 messages.error(request, "Email not found.")
                 return redirect('login-view')
 
             else:
-
-                if ticket_user.password == password:
-                    print(ticket_user)
+                if ticket_user[0].password == password:
+                    print(ticket_user[0])
                     request.session['user_type'] = user_type
-                    request.session['user_id'] = ticket_user.id
+                    request.session['user_id'] = ticket_user[0].id
                     
                     messages.success(request, "Welcome Customer!")
-                    return redirect('ticket-user-dashboard-view')
+                    return redirect('ticketuser-dashboard-view')
 
                 else:
                     messages.error(request, "Wrong Password !")
                     return redirect('login-view')
 
-        elif user_type == "vendor":
-            
-            try:
-                vendor = Vendor.objects.get(email=email)
+        elif user_type == "vendor":            
+            vendor = Vendor.objects.filter(email=email)
 
-                if vendor.password == password:
-                    print(vendor)
+            if len(vendor) == 0:
+                messages.error(request, "Email not found.")
+                return redirect('login-view')
+
+            else:
+                if vendor[0].password == password:
+                    print(vendor[0])
                     request.session['user_type'] = user_type
-                    request.session['user_id'] = vendor.id
-                    
+                    request.session['user_id'] = vendor[0].id
+                
                     messages.success(request, "Welcome Vendor!")
                     return redirect('vendor-dashboard-view')
 
                 else:
                     messages.error(request, "Wrong Password !")
                     return redirect('login-view')
-
-            except Vendor.DoesNotExist:
-                messages.error(request, "Email not found.")
-                return redirect('login-view')
 
         else:
             messages.info(request, "Enter form correctly !")
