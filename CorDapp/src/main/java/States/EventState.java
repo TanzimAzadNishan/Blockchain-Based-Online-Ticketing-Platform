@@ -1,6 +1,7 @@
 package States;
 
 import com.google.common.collect.ImmutableList;
+import javafx.util.Pair;
 import net.corda.core.contracts.ContractState;
 import net.corda.core.contracts.LinearState;
 import net.corda.core.contracts.UniqueIdentifier;
@@ -13,6 +14,7 @@ import java.util.List;
 public class EventState implements ContractState, LinearState {
     // The attributes that will be stored on the ledger as part of the state.
     private Party organizer;
+    private List<TicketState> issuedTickets;
     private List<TicketState> soldTickets;
     private int totalTickets;
     private int remainingTickets;

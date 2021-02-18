@@ -15,6 +15,7 @@ public class VendorState implements ContractState {
     private int percentage;
     private int totalSales;
     private int noOfOrganizedEvents;
+    private List<EventState> allEvents;
 
     @NotNull
     @Override

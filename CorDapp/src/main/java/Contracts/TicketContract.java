@@ -12,13 +12,13 @@ import static net.corda.core.contracts.ContractsDSL.requireSingleCommand;
 import static net.corda.core.contracts.ContractsDSL.requireThat;
 
 public class TicketContract implements Contract {
-    public static final String TICKET_CONTRACT_ID = "Contracts.TicketContract";
+    public static final String ID = "Contracts.TicketContract";
 
     public interface Commands extends CommandData {
         class Issue extends TypeOnlyCommandData implements Commands{}
         class Sell extends TypeOnlyCommandData implements Commands{}
         class Refund extends TypeOnlyCommandData implements Commands{}
-        class ReSell extends TypeOnlyCommandData implements Commands{}
+        class Resell extends TypeOnlyCommandData implements Commands{}
         class Update extends TypeOnlyCommandData implements Commands{}
     }
 
@@ -32,7 +32,7 @@ public class TicketContract implements Contract {
         CommandData commandData = command.getValue();
         List<ContractState> inputs = tx.getInputStates();
         List<ContractState> outputs = tx.getOutputStates();
-        //List<PublicKey> requiredSigners = command.getSigners();
+        List<PublicKey> requiredSigners = command.getSigners();
 
         if(commandData instanceof Commands.Issue){
             requireThat(req -> {
@@ -40,10 +40,11 @@ public class TicketContract implements Contract {
                 req.using( "Only one output state should be created when issuing a ticket.", outputs.size() == 1);
                 req.using("Output must be a TicketState.", outputs.get(0) instanceof TicketState);
 
-                TicketState ticketState = (TicketState) outputs.get(0);
+                TicketState outputState = (TicketState) outputs.get(0);
 
-                req.using("Issuer must be required singer.", command.getSigners().contains(ticketState.getTicketIssuer().getOwningKey()));
-                req.using("Amount must be positive.", ticketState.getPrice() > 0);
+                req.using("Issuer must be required singer.",
+                        requiredSigners.contains(outputState.getTicketIssuer().getOwningKey()));
+                req.using("Amount must be positive.", outputState.getPrice() > 0);
 
                 return null;
             });
@@ -66,13 +67,66 @@ public class TicketContract implements Contract {
         }
 
         else if(commandData instanceof Commands.Sell){
+            requireThat(req -> {
+                req.using("A Ticket Sell transaction should only consume one input state", inputs.size() == 1);
+                req.using( "A Ticket Sell transaction should only consume one output state", outputs.size() == 1);
+                req.using("Output must be a TicketState.", outputs.get(0) instanceof TicketState);
 
+                TicketState inputState = (TicketState) inputs.get(0);
+                TicketState outputState = (TicketState) outputs.get(0);
+
+                req.using("A Ticket's linear id is unique",
+                        inputState.getLinearId().equals(outputState.getLinearId()));
+                req.using("Issuer must be required singer.",
+                        requiredSigners.contains(inputState.getTicketIssuer().getOwningKey()));
+                req.using("Current Owner must be required singer.",
+                        requiredSigners.contains(outputState.getCurrentOwner().getOwningKey()));
+                req.using("Amount must be positive.", outputState.getPrice() > 0);
+
+                return null;
+            });
         }
         else if(commandData instanceof Commands.Refund){
+            requireThat(req -> {
+                req.using("A Ticket Sell transaction should only consume one input state", inputs.size() == 1);
+                req.using("A Ticket Sell transaction should only consume one output state", outputs.size() == 1);
+                req.using("Output must be a TicketState.", outputs.get(0) instanceof TicketState);
 
+                TicketState inputState = (TicketState) inputs.get(0);
+                TicketState outputState = (TicketState) outputs.get(0);
+
+                req.using("A Ticket's linear id is unique",
+                        inputState.getLinearId().equals(outputState.getLinearId()));
+                req.using("Issuer must be required singer.",
+                        requiredSigners.contains(outputState.getTicketIssuer().getOwningKey()));
+                req.using("Current Owner must be required singer.",
+                        requiredSigners.contains(inputState.getCurrentOwner().getOwningKey()));
+                req.using("Amount must be positive.", outputState.getRefundAmount() > 0);
+
+                return null;
+            });
         }
-        else if(commandData instanceof Commands.ReSell){
+        else if(commandData instanceof Commands.Resell){
+            requireThat(req -> {
+                req.using("A Ticket Sell transaction should only consume one input state", inputs.size() == 1);
+                req.using("A Ticket Sell transaction should only consume one output state", outputs.size() == 1);
+                req.using("Output must be a TicketState.", outputs.get(0) instanceof TicketState);
 
+                TicketState inputState = (TicketState) inputs.get(0);
+                TicketState outputState = (TicketState) outputs.get(0);
+
+                req.using("A Ticket's linear id is unique",
+                        inputState.getLinearId().equals(outputState.getLinearId()));
+                req.using("Previous owner and current owner must be different",
+                        inputState.getCurrentOwner().getOwningKey() != outputState.getCurrentOwner().getOwningKey());
+                req.using("Previous Owner must be required singer.",
+                        requiredSigners.contains(inputState.getCurrentOwner().getOwningKey()));
+                req.using("Current Owner must be required singer.",
+                        requiredSigners.contains(outputState.getCurrentOwner().getOwningKey()));
+                req.using("Amount must be positive.", outputState.getPrice() > 0);
+
+                return null;
+            });
         }
         else if(commandData instanceof Commands.Update){
 
