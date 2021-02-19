@@ -1,6 +1,7 @@
 package Flows;
 
 import Contracts.TicketContract;
+import States.EventState;
 import States.TicketState;
 import States.UserState;
 import co.paralleluniverse.fibers.Suspendable;
@@ -49,7 +50,7 @@ public class TicketResellFlow {
         @Override
         public SignedTransaction call() throws FlowException {
 
-            // 1. Retrieve the IOU State from the vault using LinearStateQueryCriteria
+            // 1. Retrieve the Ticket State from the vault using LinearStateQueryCriteria
             List<UUID> listOfLinearIds = new ArrayList<>();
             listOfLinearIds.add(ticketLinearId.getId());
             QueryCriteria queryCriteria =
@@ -63,7 +64,7 @@ public class TicketResellFlow {
             TicketState inputStateToReSell = (TicketState) inputStateAndRefToReSell.getState().getData();
 
 
-            // 1. Retrieve the VendorState from the vault using LinearStateQueryCriteria
+            // 1. Retrieve the UserState from the vault using LinearStateQueryCriteria
             List<UUID> listOfUserIds = new ArrayList<>();
             listOfUserIds.add(newUserLinearId.getId());
             QueryCriteria queryCriteriaUser =
@@ -172,10 +173,27 @@ public class TicketResellFlow {
             });
             UserState prevUserState = ticketStates.get(0).getCurrentOwner();
             UserState newUserState = ticketStates.get(1).getCurrentOwner();
+            UniqueIdentifier eventLinearId = ticketStates.get(0).getEventId();
 
-            // update balance
+
+            // 1. Retrieve the EventState from the vault using LinearStateQueryCriteria
+            List<UUID> listOfEventIds = new ArrayList<>();
+            listOfEventIds.add(eventLinearId.getId());
+            QueryCriteria queryCriteriaEvent =
+                    new QueryCriteria.LinearStateQueryCriteria(null, listOfEventIds);
+
+            // 2. Get a reference to the inputState data that we are going to settle.
+            Vault.Page eventResults = getServiceHub().getVaultService().queryBy(
+                    EventState.class, queryCriteriaEvent
+            );
+            StateAndRef eventStateRef = (StateAndRef) eventResults.getStates().get(0);
+            EventState eventState = (EventState) eventStateRef.getState().getData();
+
+
+            // update balance and EventState
             prevUserState.increaseBalance(ticketStates.get(0).getPrice());
             newUserState.decreaseBalance(ticketStates.get(0).getPrice());
+            eventState.replaceTicketStateOfAEvent(ticketStates.get(1));
 
 
             // Create a sign transaction flow

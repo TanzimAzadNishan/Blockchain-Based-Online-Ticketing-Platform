@@ -111,4 +111,14 @@ public class EventState implements ContractState, LinearState {
         return this;
         //return new EventState(organizer, eventDate, issuedTickets, soldTickets, totalTickets, remainingTickets, linearId);
     }
+
+    public void replaceTicketStateOfAEvent(TicketState ticketState){
+        for(TicketState state: soldTickets){
+            if(state.getLinearId().equals(ticketState.getLinearId())){
+                soldTickets.remove(state);
+                break;
+            }
+        }
+        soldTickets.add(ticketState);
+    }
 }
