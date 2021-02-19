@@ -1,6 +1,5 @@
 package States;
 
-import Contracts.EventContract;
 import Contracts.VendorContract;
 import com.google.common.collect.ImmutableList;
 import net.corda.core.contracts.*;
@@ -10,7 +9,6 @@ import net.corda.core.serialization.ConstructorForDeserialization;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 

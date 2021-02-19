@@ -16,6 +16,8 @@ import java.util.Currency;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.singletonList;
+
 public class VendorRegisterFlow {
 
     @InitiatingFlow
@@ -47,8 +49,22 @@ public class VendorRegisterFlow {
             builder.addOutputState(vendorState, VendorContract.ID);
             builder.verify(getServiceHub());
 
+            List<Party> otherParties = vendorState.getParticipants()
+                    .stream().map(el -> (Party)el)
+                    .collect(Collectors.toList());
+
+            otherParties.remove(getOurIdentity());
+
+            List<FlowSession> sessions = otherParties
+                    .stream().map(el -> initiateFlow(el))
+                    .collect(Collectors.toList());
+
             final SignedTransaction signedTx = getServiceHub().signInitialTransaction(builder);
-            return signedTx;
+            SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(signedTx, sessions));
+
+            //  Return the output of the FinalityFlow which sends the transaction to the notary for verification
+            //  and the causes it to be persisted to the vault of appropriate nodes.
+            return subFlow(new FinalityFlow(fullySignedTx, sessions));
         }
     }
 }

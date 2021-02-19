@@ -1,15 +1,12 @@
 package States;
 
 import Contracts.TicketContract;
-import com.google.common.collect.ImmutableList;
 import net.corda.core.contracts.*;
 import net.corda.core.identity.AbstractParty;
-import net.corda.core.identity.Party;
 import net.corda.core.serialization.ConstructorForDeserialization;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Currency;
 import java.util.List;
 
 @BelongsToContract(TicketContract.class)

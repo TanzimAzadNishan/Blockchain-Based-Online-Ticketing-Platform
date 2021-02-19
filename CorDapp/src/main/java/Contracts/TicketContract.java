@@ -79,6 +79,8 @@ public class TicketContract implements Contract {
 
                 req.using("A Ticket's linear id is unique",
                         inputState.getLinearId().equals(outputState.getLinearId()));
+                req.using("User must have enough balance to buy a ticket",
+                        outputState.getCurrentOwner().getBalance() >= inputState.getPrice());
                 req.using("Issuer must be required singer.",
                         requiredSigners.contains(inputState.getTicketIssuer().getAgency().getOwningKey()));
                 req.using("Current Owner must be required singer.",
@@ -122,6 +124,8 @@ public class TicketContract implements Contract {
                 req.using("Previous owner and current owner must be different",
                         inputState.getCurrentOwner().getUser().getOwningKey() !=
                                 outputState.getCurrentOwner().getUser().getOwningKey());
+                req.using("User must have enough balance to buy a ticket",
+                         outputState.getCurrentOwner().getBalance() >= inputState.getPrice());
                 req.using("Previous Owner must be required singer.",
                         requiredSigners.contains(inputState.getCurrentOwner().getUser().getOwningKey()));
                 req.using("Current Owner must be required singer.",

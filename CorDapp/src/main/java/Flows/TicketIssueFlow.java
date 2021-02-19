@@ -108,11 +108,11 @@ public class TicketIssueFlow {
             builder.addCommand(command);
             builder.verify(getServiceHub());
 
-            final SignedTransaction signedTx = getServiceHub().signInitialTransaction(builder);
-            return signedTx;
+            //final SignedTransaction signedTx = getServiceHub().signInitialTransaction(builder);
+            //return signedTx;
 
             // Collect the other party's signature using the SignTransactionFlow.
-            /*List<Party> otherParties = allTickets.get(0).getParticipants()
+            List<Party> otherParties = allTickets.get(0).getParticipants()
                     .stream().map(el -> (Party)el)
                     .collect(Collectors.toList());
 
@@ -122,10 +122,12 @@ public class TicketIssueFlow {
                     .stream().map(el -> initiateFlow(el))
                     .collect(Collectors.toList());
 
-            SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(partiallySignedTx, sessions));
+            final SignedTransaction signedTx = getServiceHub().signInitialTransaction(builder);
+            SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(signedTx, sessions));
 
-            // Assuming no exceptions, we can now finalise the transaction
-            return subFlow(new FinalityFlow(fullySignedTx, sessions));*/
+            //  Return the output of the FinalityFlow which sends the transaction to the notary for verification
+            //  and the causes it to be persisted to the vault of appropriate nodes.
+            return subFlow(new FinalityFlow(fullySignedTx, sessions));
         }
     }
 }

@@ -1,15 +1,12 @@
 package States;
 
 import Contracts.EventContract;
-import Contracts.TicketContract;
 import com.google.common.collect.ImmutableList;
-import javafx.util.Pair;
 import net.corda.core.contracts.BelongsToContract;
 import net.corda.core.contracts.ContractState;
 import net.corda.core.contracts.LinearState;
 import net.corda.core.contracts.UniqueIdentifier;
 import net.corda.core.identity.AbstractParty;
-import net.corda.core.identity.Party;
 import net.corda.core.serialization.ConstructorForDeserialization;
 import org.jetbrains.annotations.NotNull;
 
