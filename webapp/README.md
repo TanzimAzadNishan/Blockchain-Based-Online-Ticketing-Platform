@@ -18,4 +18,5 @@
 - /ticket/movie/
 
 #### Vendor App: /vendor/
-- /vendor/
+- /vendor/dashboard/
+- /vendor/issue-ticket/
