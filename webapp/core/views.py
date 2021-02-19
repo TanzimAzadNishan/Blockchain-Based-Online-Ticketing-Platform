@@ -9,6 +9,12 @@ from vendor.models import Vendor
 import hashlib
 
 
+class IndexView(View):
+
+    def get(self, request):
+        return render(request, 'core/index.html')
+
+
 class UserLoginView(View):
 
     def get(self, request):
