@@ -13,9 +13,6 @@ class Vendor(models.Model):
     vendor_type = models.TextField(null=False)
     unique_hash = models.TextField()
 
-    def __init__(self):
-        self.unique_hash = hashlib.sha256(self.email, self.vendor_name).hexdigest()
-
     def __str__(self):
         return "Vendorid: {}".format(self.id)
         
