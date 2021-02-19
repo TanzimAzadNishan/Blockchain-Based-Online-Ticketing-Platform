@@ -15,53 +15,60 @@ import java.util.List;
 @BelongsToContract(TicketContract.class)
 public class TicketState implements ContractState, LinearState {
     // The attributes that will be stored on the ledger as part of the state.
-    private Party currentOwner;
-    private Party ticketIssuer;
-    private int price;
-    private int refundAmount;
+    private UserState currentOwner;
+    private VendorState ticketIssuer;
+    private double price;
+    private double refundAmount;
     private String eventDate;
     private UniqueIdentifier linearId;
+    private UniqueIdentifier eventId;
     private List<AbstractParty> participants;
 
 
     @ConstructorForDeserialization
-    private TicketState(Party currentOwner, Party ticketIssuer, int price, int refundAmount, String eventDate, UniqueIdentifier linearId) {
+    private TicketState(UserState currentOwner, VendorState ticketIssuer, double price, double refundAmount,
+                        String eventDate, UniqueIdentifier linearId, UniqueIdentifier eventId) {
         this.currentOwner = currentOwner;
         this.ticketIssuer = ticketIssuer;
         this.price = price;
         this.refundAmount = refundAmount;
         this.eventDate = eventDate;
         this.linearId = linearId;
+        this.eventId = eventId;
 
         this.participants = new ArrayList<>();
-        participants.add(ticketIssuer);
+        participants.add(ticketIssuer.getAgency());
         if(currentOwner != null){
-            this.participants.add(currentOwner);
+            this.participants.add(currentOwner.getUser());
         }
     }
 
-    public TicketState(Party ticketIssuer, int price, int refundAmount, String eventDate) {
-        this(null, ticketIssuer, price, refundAmount, eventDate, new UniqueIdentifier());
+    public TicketState(VendorState ticketIssuer, double price, double refundAmount, String eventDate, UniqueIdentifier eventId) {
+        this(null, ticketIssuer, price, refundAmount, eventDate, new UniqueIdentifier(), eventId);
     }
 
-    public int getRefundAmount() {
+    public double getRefundAmount() {
         return refundAmount;
     }
 
-    public Party getCurrentOwner() {
+    public UserState getCurrentOwner() {
         return currentOwner;
     }
 
-    public Party getTicketIssuer() {
+    public VendorState getTicketIssuer() {
         return ticketIssuer;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
     public String getEventDate() {
         return eventDate;
+    }
+
+    public UniqueIdentifier getEventId() {
+        return eventId;
     }
 
     @NotNull
@@ -76,12 +83,21 @@ public class TicketState implements ContractState, LinearState {
         return linearId;
     }
 
-    public TicketState withNewOwner(Party newOwner){
-        return new TicketState(newOwner, ticketIssuer, price, refundAmount,
-                eventDate, linearId);
+    public TicketState withNewOwner(UserState newOwner){
+        this.currentOwner = newOwner;
+        this.participants.add(currentOwner.getUser());
+        return this;
+        //return new TicketState(newOwner, ticketIssuer, price, refundAmount, eventDate, linearId);
     }
     public TicketState withNoOwner(){
-        return new TicketState(null, ticketIssuer, price, refundAmount,
-                eventDate, linearId);
+        this.participants.remove(currentOwner.getUser());
+        this.currentOwner = null;
+        return this;
+        //return new TicketState(null, ticketIssuer, price, refundAmount, eventDate, linearId);
+    }
+    public TicketState withNewEventDate(String eventDate){
+        this.eventDate = eventDate;
+        return this;
+        //return new TicketState(currentOwner, ticketIssuer, price, refundAmount, eventDate, linearId);
     }
 }

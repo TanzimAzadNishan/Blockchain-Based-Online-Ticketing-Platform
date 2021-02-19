@@ -16,8 +16,8 @@ public class EventContract implements Contract {
     public static final String ID = "Contracts.EventContract";
 
     public interface Commands extends CommandData {
-        class Register extends TypeOnlyCommandData implements TicketContract.Commands {}
-        class Update extends TypeOnlyCommandData implements TicketContract.Commands {}
+        class Register extends TypeOnlyCommandData implements EventContract.Commands {}
+        class Update extends TypeOnlyCommandData implements EventContract.Commands {}
     }
     @Override
     public void verify(@NotNull LedgerTransaction tx) throws IllegalArgumentException {
@@ -33,14 +33,14 @@ public class EventContract implements Contract {
 
         if(commandData instanceof Commands.Register){
             requireThat(req -> {
-                req.using("No inputs should be consumed when issuing a ticket.", inputs.size() == 0);
-                req.using( "Only one output state should be created when issuing a ticket.", outputs.size() == 1);
-                req.using("Output must be a TicketState.", outputs.get(0) instanceof EventState);
+                req.using("No inputs should be consumed when registering an event.", inputs.size() == 0);
+                req.using( "Only one output state should be created when registering an event.", outputs.size() == 1);
+                req.using("Output must be a EventState.", outputs.get(0) instanceof EventState);
 
                 EventState outputState = (EventState) outputs.get(0);
 
                 req.using("Issuer must be required singer.",
-                        requiredSigners.contains(outputState.getOrganizer().getOwningKey()));
+                        requiredSigners.contains(outputState.getOrganizer().getAgency().getOwningKey()));
                 req.using("Total no. of tickets must be positive.", outputState.getTotalTickets() > 0);
                 req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
 
@@ -48,7 +48,23 @@ public class EventContract implements Contract {
             });
         }
         else if(commandData instanceof Commands.Update){
+            requireThat(req -> {
+                req.using("No inputs should be consumed when updating an event.", inputs.size() == 1);
+                req.using( "Only one output state should be created when updating an event.", outputs.size() == 1);
+                req.using("Input must be a EventState.", inputs.get(0) instanceof EventState);
+                req.using("Output must be a EventState.", outputs.get(0) instanceof EventState);
 
+                EventState inputState = (EventState) inputs.get(0);
+                EventState outputState = (EventState) outputs.get(0);
+
+                req.using("An Event's linear id is unique",
+                        inputState.getLinearId().equals(outputState.getLinearId()));
+                req.using("Issuer must be required singer.",
+                        requiredSigners.contains(inputState.getOrganizer().getAgency().getOwningKey()));
+                req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
+
+                return null;
+            });
         }
         else {
             throw new IllegalArgumentException("Command is not recognised");

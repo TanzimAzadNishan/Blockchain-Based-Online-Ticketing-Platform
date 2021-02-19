@@ -37,13 +37,13 @@ public class TicketContract implements Contract {
         if(commandData instanceof Commands.Issue){
             requireThat(req -> {
                 req.using("No inputs should be consumed when issuing a ticket.", inputs.size() == 0);
-                req.using( "Only one output state should be created when issuing a ticket.", outputs.size() == 1);
+                req.using( "Some output state should be created when issuing a ticket.", outputs.size() > 0);
                 req.using("Output must be a TicketState.", outputs.get(0) instanceof TicketState);
 
                 TicketState outputState = (TicketState) outputs.get(0);
 
                 req.using("Issuer must be required singer.",
-                        requiredSigners.contains(outputState.getTicketIssuer().getOwningKey()));
+                        requiredSigners.contains(outputState.getTicketIssuer().getAgency().getOwningKey()));
                 req.using("Price must be positive.", outputState.getPrice() > 0);
                 req.using("Refund Amount must be positive.", outputState.getRefundAmount() > 0);
                 req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
@@ -80,9 +80,9 @@ public class TicketContract implements Contract {
                 req.using("A Ticket's linear id is unique",
                         inputState.getLinearId().equals(outputState.getLinearId()));
                 req.using("Issuer must be required singer.",
-                        requiredSigners.contains(inputState.getTicketIssuer().getOwningKey()));
+                        requiredSigners.contains(inputState.getTicketIssuer().getAgency().getOwningKey()));
                 req.using("Current Owner must be required singer.",
-                        requiredSigners.contains(outputState.getCurrentOwner().getOwningKey()));
+                        requiredSigners.contains(outputState.getCurrentOwner().getUser().getOwningKey()));
                 req.using("Amount must be positive.", outputState.getPrice() > 0);
 
                 return null;
@@ -100,9 +100,9 @@ public class TicketContract implements Contract {
                 req.using("A Ticket's linear id is unique",
                         inputState.getLinearId().equals(outputState.getLinearId()));
                 req.using("Issuer must be required singer.",
-                        requiredSigners.contains(outputState.getTicketIssuer().getOwningKey()));
+                        requiredSigners.contains(outputState.getTicketIssuer().getAgency().getOwningKey()));
                 req.using("Current Owner must be required singer.",
-                        requiredSigners.contains(inputState.getCurrentOwner().getOwningKey()));
+                        requiredSigners.contains(inputState.getCurrentOwner().getUser().getOwningKey()));
                 req.using("Amount must be positive.", outputState.getRefundAmount() > 0);
 
                 return null;
@@ -120,18 +120,35 @@ public class TicketContract implements Contract {
                 req.using("A Ticket's linear id is unique",
                         inputState.getLinearId().equals(outputState.getLinearId()));
                 req.using("Previous owner and current owner must be different",
-                        inputState.getCurrentOwner().getOwningKey() != outputState.getCurrentOwner().getOwningKey());
+                        inputState.getCurrentOwner().getUser().getOwningKey() !=
+                                outputState.getCurrentOwner().getUser().getOwningKey());
                 req.using("Previous Owner must be required singer.",
-                        requiredSigners.contains(inputState.getCurrentOwner().getOwningKey()));
+                        requiredSigners.contains(inputState.getCurrentOwner().getUser().getOwningKey()));
                 req.using("Current Owner must be required singer.",
-                        requiredSigners.contains(outputState.getCurrentOwner().getOwningKey()));
+                        requiredSigners.contains(outputState.getCurrentOwner().getUser().getOwningKey()));
                 req.using("Amount must be positive.", outputState.getPrice() > 0);
 
                 return null;
             });
         }
-        else if(commandData instanceof Commands.Update){
 
+        else if(commandData instanceof Commands.Update){
+            requireThat(req -> {
+                req.using("A Ticket Update transaction should only consume one input state", inputs.size() == 1);
+                req.using("A Ticket Update transaction should only consume one output state", outputs.size() == 1);
+                req.using("Output must be a TicketState.", outputs.get(0) instanceof TicketState);
+
+                TicketState inputState = (TicketState) inputs.get(0);
+                TicketState outputState = (TicketState) outputs.get(0);
+
+                req.using("A Ticket's linear id is unique",
+                        inputState.getLinearId().equals(outputState.getLinearId()));
+                req.using("Issuer must be required singer.",
+                        requiredSigners.contains(inputState.getTicketIssuer().getAgency().getOwningKey()));
+                req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
+
+                return null;
+            });
         }
         else {
             throw new IllegalArgumentException("Command type not recognised");

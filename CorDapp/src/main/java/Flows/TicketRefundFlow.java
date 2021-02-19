@@ -1,7 +1,10 @@
 package Flows;
 
 import Contracts.TicketContract;
+import States.EventState;
 import States.TicketState;
+import States.UserState;
+import States.VendorState;
 import co.paralleluniverse.fibers.Suspendable;
 import net.corda.core.contracts.Command;
 import net.corda.core.contracts.ContractState;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.singletonList;
 import static net.corda.core.contracts.ContractsDSL.requireThat;
 
 public class TicketRefundFlow {
@@ -32,9 +36,15 @@ public class TicketRefundFlow {
     @StartableByRPC
     public static class TicketRefundFlowInitiator extends FlowLogic<SignedTransaction>{
 
+        private final UniqueIdentifier vendorLinearId;
+        private final UniqueIdentifier eventLinearId;
+        private final UniqueIdentifier userLinearId;
         private final UniqueIdentifier ticketLinearId;
 
-        public TicketRefundFlowInitiator(UniqueIdentifier ticketLinearId) {
+        public TicketRefundFlowInitiator(UniqueIdentifier vendorLinearId, UniqueIdentifier eventLinearId, UniqueIdentifier userLinearId, UniqueIdentifier ticketLinearId) {
+            this.vendorLinearId = vendorLinearId;
+            this.eventLinearId = eventLinearId;
+            this.userLinearId = userLinearId;
             this.ticketLinearId = ticketLinearId;
         }
 
@@ -55,8 +65,8 @@ public class TicketRefundFlow {
             StateAndRef inputStateAndRefToRefund = (StateAndRef) results.getStates().get(0);
             TicketState inputStateToRefund = (TicketState) inputStateAndRefToRefund.getState().getData();
 
-            Party notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
 
+            Party notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
             final TransactionBuilder builder = new TransactionBuilder(notary);
 
             List<PublicKey> requiredSigners = inputStateToRefund.getParticipants()
@@ -66,13 +76,15 @@ public class TicketRefundFlow {
             Command<TicketContract.Commands.Refund> command =
                     new Command<>(new TicketContract.Commands.Refund(), requiredSigners);
 
-            TicketState outputState = inputStateToRefund.withNoOwner();
+            TicketState outputState = inputStateToRefund;
+            outputState.withNoOwner();
+
             builder.addCommand(command);
             builder.addInputState(inputStateAndRefToRefund);
             builder.addOutputState(outputState, TicketContract.ID);
 
             // Ensure that this flow is being executed by current owner.
-            if (!inputStateToRefund.getCurrentOwner().getOwningKey().equals(getOurIdentity().getOwningKey())) {
+            if (!inputStateToRefund.getCurrentOwner().getUser().getOwningKey().equals(getOurIdentity().getOwningKey())) {
                 throw new IllegalArgumentException("This flow must be run by the current owner.");
             }
 
@@ -80,7 +92,7 @@ public class TicketRefundFlow {
 
             final SignedTransaction partiallySignedTx = getServiceHub().signInitialTransaction(builder);
             // Collect the other party's signature using the SignTransactionFlow.
-            List<Party> otherParties = inputStateToRefund.getParticipants()
+            /*List<Party> otherParties = inputStateToRefund.getParticipants()
                     .stream().map(el -> (Party)el)
                     .collect(Collectors.toList());
 
@@ -88,13 +100,16 @@ public class TicketRefundFlow {
 
             List<FlowSession> sessions = otherParties
                     .stream().map(el -> initiateFlow(el))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());*/
 
-            SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(partiallySignedTx, sessions));
+            FlowSession sessions = initiateFlow(inputStateToRefund.getTicketIssuer().getAgency());
+            sessions.send(inputStateToRefund);
+
+            SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(partiallySignedTx, singletonList(sessions)));
 
             //  Return the output of the FinalityFlow which sends the transaction to the notary for verification
             //  and the causes it to be persisted to the vault of appropriate nodes.
-            return subFlow(new FinalityFlow(fullySignedTx, sessions));
+            return subFlow(new FinalityFlow(fullySignedTx, singletonList(sessions)));
         }
     }
 
@@ -131,6 +146,33 @@ public class TicketRefundFlow {
                     txWeJustSignedId = stx.getId();
                 }
             }
+
+            TicketState ticketState = otherPartyFlow.receive(TicketState.class).unwrap(it -> {
+                return it;
+            });
+            UniqueIdentifier eventLinearId = ticketState.getEventId();
+            VendorState vendorState = ticketState.getTicketIssuer();
+            UserState userState = ticketState.getCurrentOwner();
+
+
+            // 1. Retrieve the EventState from the vault using LinearStateQueryCriteria
+            List<UUID> listOfEventIds = new ArrayList<>();
+            listOfEventIds.add(eventLinearId.getId());
+            QueryCriteria queryCriteriaEvent =
+                    new QueryCriteria.LinearStateQueryCriteria(null, listOfEventIds);
+
+            // 2. Get a reference to the inputState data that we are going to settle.
+            Vault.Page eventResults = getServiceHub().getVaultService().queryBy(
+                    EventState.class, queryCriteriaEvent
+            );
+            StateAndRef eventStateRef = (StateAndRef) eventResults.getStates().get(0);
+            EventState eventState = (EventState) eventStateRef.getState().getData();
+
+            // update event states and balance
+            eventState.markTicketAsUnsold(ticketState);
+            vendorState.decreaseBalance(ticketState.getRefundAmount());
+            userState.increaseBalance(ticketState.getRefundAmount());
+
 
             // Create a sign transaction flow
             SignTxFlow signTxFlow = new SignTxFlow(otherPartyFlow, SignTransactionFlow.Companion.tracker());

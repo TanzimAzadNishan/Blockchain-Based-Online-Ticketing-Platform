@@ -1,7 +1,10 @@
 package Flows;
 
 import Contracts.TicketContract;
+import States.EventState;
 import States.TicketState;
+import States.UserState;
+import States.VendorState;
 import co.paralleluniverse.fibers.Suspendable;
 import net.corda.core.contracts.Command;
 import net.corda.core.contracts.ContractState;
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import static java.util.Collections.singletonList;
 import static net.corda.core.contracts.ContractsDSL.requireThat;
 
 public class TicketSellFlow {
@@ -32,11 +36,18 @@ public class TicketSellFlow {
     @StartableByRPC
     public static class TicketSellFlowInitiator extends FlowLogic<SignedTransaction> {
 
-        private final Party newOwner;
+        private final UniqueIdentifier vendorLinearId;
+        private final UniqueIdentifier eventLinearId;
+        private final UniqueIdentifier userLinearId;
+        private Party newOwner;
         private final UniqueIdentifier ticketLinearId;
 
-        public TicketSellFlowInitiator(Party newOwner, UniqueIdentifier linearId) {
-            this.newOwner = newOwner;
+        public TicketSellFlowInitiator(UniqueIdentifier vendorLinearId, UniqueIdentifier eventLinearId,
+                                       UniqueIdentifier userLinearId, UniqueIdentifier linearId) {
+            this.vendorLinearId = vendorLinearId;
+            this.eventLinearId = eventLinearId;
+            this.userLinearId = userLinearId;
+            this.newOwner = null;
             this.ticketLinearId = linearId;
         }
 
@@ -44,7 +55,7 @@ public class TicketSellFlow {
         @Override
         public SignedTransaction call() throws FlowException {
 
-            // 1. Retrieve the IOU State from the vault using LinearStateQueryCriteria
+            // 1. Retrieve the Ticket State from the vault using LinearStateQueryCriteria
             List<UUID> listOfLinearIds = new ArrayList<>();
             listOfLinearIds.add(ticketLinearId.getId());
             QueryCriteria queryCriteria =
@@ -57,9 +68,24 @@ public class TicketSellFlow {
             StateAndRef inputStateAndRefToSell = (StateAndRef) results.getStates().get(0);
             TicketState inputStateToSell = (TicketState) inputStateAndRefToSell.getState().getData();
 
-            Party notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
 
+            // 1. Retrieve the UserState from the vault using LinearStateQueryCriteria
+            List<UUID> listOfUserIds = new ArrayList<>();
+            listOfUserIds.add(userLinearId.getId());
+            QueryCriteria queryCriteriaUser =
+                    new QueryCriteria.LinearStateQueryCriteria(null, listOfUserIds);
+
+            // 2. Get a reference to the inputState data that we are going to settle.
+            Vault.Page userResults = getServiceHub().getVaultService().queryBy(
+                    UserState.class, queryCriteriaUser
+            );
+            StateAndRef userStateRef = (StateAndRef) userResults.getStates().get(0);
+            UserState newUserState = (UserState) userStateRef.getState().getData();
+
+
+            Party notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
             final TransactionBuilder builder = new TransactionBuilder(notary);
+            this.newOwner = newUserState.getUser();
 
             List<PublicKey> requiredSigners = inputStateToSell.getParticipants()
                     .stream().map(AbstractParty::getOwningKey)
@@ -69,14 +95,15 @@ public class TicketSellFlow {
             Command<TicketContract.Commands.Sell> command =
                     new Command<>(new TicketContract.Commands.Sell(), requiredSigners);
 
-            TicketState outputState = inputStateToSell.withNewOwner(newOwner);
+            TicketState outputState = inputStateToSell;
+            outputState = outputState.withNewOwner(newUserState);
 
             builder.addCommand(command);
             builder.addInputState(inputStateAndRefToSell);
             builder.addOutputState(outputState, TicketContract.ID);
 
             // Ensure that this flow is being executed by ticket issuer.
-            if (!inputStateToSell.getTicketIssuer().getOwningKey().equals(getOurIdentity().getOwningKey())) {
+            if (!inputStateToSell.getTicketIssuer().getAgency().getOwningKey().equals(getOurIdentity().getOwningKey())) {
                 throw new IllegalArgumentException("This flow must be run by the ticket issuer.");
             }
 
@@ -85,7 +112,7 @@ public class TicketSellFlow {
             final SignedTransaction partiallySignedTx = getServiceHub().signInitialTransaction(builder);
 
             // Collect the other party's signature using the SignTransactionFlow.
-            List<Party> otherParties = outputState.getParticipants()
+            /*List<Party> otherParties = outputState.getParticipants()
                     .stream().map(el -> (Party)el)
                     .collect(Collectors.toList());
 
@@ -93,13 +120,20 @@ public class TicketSellFlow {
 
             List<FlowSession> sessions = otherParties
                     .stream().map(el -> initiateFlow(el))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());*/
 
-            SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(partiallySignedTx, sessions));
+            FlowSession sessions = initiateFlow(newOwner);
+            //List<UniqueIdentifier> requiredIds = new ArrayList<>();
+            //requiredIds.add(vendorLinearId);
+            //requiredIds.add(eventLinearId);
+            //sessions.send(requiredIds);
+            sessions.send(outputState);
+
+            SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(partiallySignedTx, singletonList(sessions)));
 
             //  Return the output of the FinalityFlow which sends the transaction to the notary for verification
             //  and the causes it to be persisted to the vault of appropriate nodes.
-            return subFlow(new FinalityFlow(fullySignedTx, sessions));
+            return subFlow(new FinalityFlow(fullySignedTx, singletonList(sessions)));
         }
     }
 
@@ -135,6 +169,33 @@ public class TicketSellFlow {
                     txWeJustSignedId = stx.getId();
                 }
             }
+
+            TicketState ticketState = otherPartyFlow.receive(TicketState.class).unwrap(it -> {
+                return it;
+            });
+            UniqueIdentifier eventLinearId = ticketState.getEventId();
+            VendorState vendorState = ticketState.getTicketIssuer();
+            UserState userState = ticketState.getCurrentOwner();
+
+
+            // 1. Retrieve the EventState from the vault using LinearStateQueryCriteria
+            List<UUID> listOfEventIds = new ArrayList<>();
+            listOfEventIds.add(eventLinearId.getId());
+            QueryCriteria queryCriteriaEvent =
+                    new QueryCriteria.LinearStateQueryCriteria(null, listOfEventIds);
+
+            // 2. Get a reference to the inputState data that we are going to settle.
+            Vault.Page eventResults = getServiceHub().getVaultService().queryBy(
+                    EventState.class, queryCriteriaEvent
+            );
+            StateAndRef eventStateRef = (StateAndRef) eventResults.getStates().get(0);
+            EventState eventState = (EventState) eventStateRef.getState().getData();
+
+            // update event states and balance
+            eventState.markTicketAsSold(ticketState);
+            vendorState.increaseBalance(ticketState.getPrice());
+            userState.decreaseBalance(ticketState.getPrice());
+
 
             // Create a sign transaction flow
             SignTxFlow signTxFlow = new SignTxFlow(otherPartyFlow, SignTransactionFlow.Companion.tracker());

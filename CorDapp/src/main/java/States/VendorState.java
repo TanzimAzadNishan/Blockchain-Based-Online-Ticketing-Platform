@@ -1,31 +1,61 @@
 package States;
 
+import Contracts.EventContract;
+import Contracts.VendorContract;
 import com.google.common.collect.ImmutableList;
-import net.corda.core.contracts.ContractState;
+import net.corda.core.contracts.*;
 import net.corda.core.identity.AbstractParty;
 import net.corda.core.identity.Party;
+import net.corda.core.serialization.ConstructorForDeserialization;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.Currency;
 import java.util.List;
 
-public class VendorState implements ContractState {
+
+@BelongsToContract(VendorContract.class)
+public class VendorState implements ContractState, LinearState {
     // The attributes that will be stored on the ledger as part of the state.
     private Party agency;
-    private int rating;
-    private int percentage;
+    private double percentage;
     private int totalSales;
     private int noOfOrganizedEvents;
     private List<EventState> allEvents;
+    private UniqueIdentifier linearId;
+    private double balance;
+
+
+    @ConstructorForDeserialization
+    private VendorState(Party agency, double percentage, int totalSales, int noOfOrganizedEvents, List<EventState> allEvents,
+                        double balance, UniqueIdentifier linearId) {
+        this.agency = agency;
+        this.percentage = percentage;
+        this.totalSales = totalSales;
+        this.noOfOrganizedEvents = noOfOrganizedEvents;
+        this.allEvents = allEvents;
+        this.balance = balance;
+        this.linearId = linearId;
+    }
+
+    public VendorState(Party agency, double percentage) {
+        this(agency, percentage, 0, 0, new ArrayList<>(), 300, new UniqueIdentifier());
+    }
+
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
+    }
+
+    public void addNewEvent(EventState event) {
+        this.noOfOrganizedEvents++;
+        this.allEvents.add(event);
+    }
 
     public Party getAgency() {
         return agency;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public int getPercentage() {
+    public double getPercentage() {
         return percentage;
     }
 
@@ -41,9 +71,38 @@ public class VendorState implements ContractState {
         return allEvents;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
     @NotNull
     @Override
     public List<AbstractParty> getParticipants() {
         return ImmutableList.of(agency);
+    }
+
+    @NotNull
+    @Override
+    public UniqueIdentifier getLinearId() {
+        return linearId;
+    }
+
+    public EventState getEventByLinearId(UniqueIdentifier linearId){
+        for(EventState event: allEvents){
+            if(event.getLinearId().equals(linearId)){
+                return event;
+            }
+        }
+        return null;
+    }
+    public void addTicketsToAEvent(List<TicketState> issuedTickets, UniqueIdentifier linearId) {
+        EventState eventState = getEventByLinearId(linearId);
+        eventState.setIssuedTickets(issuedTickets);
+    }
+    public void increaseBalance(double amount){
+        this.balance = this.balance + amount;
+    }
+    public void decreaseBalance(double amount){
+        this.balance = this.balance - amount;
     }
 }
