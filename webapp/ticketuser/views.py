@@ -46,4 +46,3 @@ class TickerUserWalletView(View):
         """
         return render(request, 'ticketuser/wallet.html')
 
-
