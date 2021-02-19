@@ -32,9 +32,27 @@
                 <!-- Navigation -->
                 <div class="android-navigation-container">
                     <nav class="android-navigation mdl-navigation">
+
+                        {% if request.session.user_type == 'ticket_user' %}
+    
+                        <a class="mdl-navigation__link" href="{% url 'ticketuser-dashboard-view' %}">Dashboard</a>
+                        <a class="mdl-navigation__link" href="{% url 'ticketuser-wallet-view' %}">Wallet</a>
+                        <a class="mdl-navigation__link" href="{% url 'logout-view' %}">Logout</a>
+    
+                        {% elif request.session.user_type == 'vendor' %}
+    
+                        <a class="mdl-navigation__link" href="{% url 'vendor-dashboard-view' %}">Dashboard</a>
+                        <a class="mdl-navigation__link" href="{% url 'logout-view' %}">Logout</a>
+    
+                        {% else %}
+    
                         <a class="mdl-navigation__link" href="{% url 'login-view' %}">Login</a>
                         <a class="mdl-navigation__link" href="{% url 'ticketuser-signup-view' %}">User Signup</a>
                         <a class="mdl-navigation__link" href="{% url 'vendor-signup-view' %}">Vendor Signup</a>
+    
+                        {% endif %}
+    
+    
                     </nav>
                 </div>
 

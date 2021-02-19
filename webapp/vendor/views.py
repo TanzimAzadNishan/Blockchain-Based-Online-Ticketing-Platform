@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .models import Vendor
 
+from core.utils import check_vendor
+
 import hashlib
 
 
@@ -35,6 +37,7 @@ class VendorSignupView(View):
 
 class VendorDashboardView(View):
 
+    @check_vendor
     def get(self, request):
         return render(request, 'vendor/dashboard.html')
 

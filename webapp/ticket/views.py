@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
+from core.utils import check_vendor, check_ticketuser, check_logged_in
+
 
 class TicketInfoView(View):
 
+    @check_logged_in
     def get(self, request, ticket_hash):
         """
         Fetch ticket information from the Blockchain network
@@ -13,6 +16,7 @@ class TicketInfoView(View):
 
 class VerifyTicketView(View):
 
+    @check_logged_in
     def post(self, request):
         ticket_hash = request.POST.get('ticket_hash')
         """
@@ -23,6 +27,7 @@ class VerifyTicketView(View):
 
 class BusTicketListView(View):
 
+    @check_ticketuser
     def get(self, request):
         """
         Fetch all available bus tickets from the network
@@ -35,6 +40,7 @@ class BusTicketListView(View):
 
 class ShipTicketListView(View):
 
+    @check_ticketuser
     def get(self, request):
         """
         Fetch all available ship tickets from the network
@@ -47,6 +53,7 @@ class ShipTicketListView(View):
 
 class MovieTicketListView(View):
 
+    @check_ticketuser
     def get(self, request):
         """
         Fetch all available movie tickets from the network
@@ -59,6 +66,7 @@ class MovieTicketListView(View):
 
 class EventTicketListView(View):
 
+    @check_ticketuser
     def get(self, request):
         """
         Fetch all available event tickets from the network
@@ -67,4 +75,3 @@ class EventTicketListView(View):
             'category': "Event"
         }
         return render(request, 'ticket/ticket-list.html', context)
-

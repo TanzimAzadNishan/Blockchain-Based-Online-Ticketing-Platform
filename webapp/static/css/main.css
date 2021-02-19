@@ -6,7 +6,7 @@
 .category-card {
     width: 25%;
     margin: 5px;
-    background-color: black;
+    background-color: #3c014e;
     color: white;
     border-radius: 15px;
     text-align: center;
@@ -23,7 +23,12 @@
 }
 
 .category-card :hover{
-    color: #9c9c9c;
+    color: #e388ff;
+}
+
+.card-header-title {
+    font-size: 20px;
+    font-family: "Roboto","Helvetica","Arial",sans-serif;
 }
 
 

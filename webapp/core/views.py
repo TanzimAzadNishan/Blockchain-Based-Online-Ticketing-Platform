@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 
-from .utils import verify_auth_token
+from .utils import check_logged_in
 from ticketuser.models import TicketUser
 from vendor.models import Vendor
 
@@ -16,7 +16,7 @@ class IndexView(View):
 
 
 class UserLoginView(View):
-
+    
     def get(self, request):
         return render(request, 'core/login.html')
 
@@ -81,3 +81,9 @@ class UserLogoutView(View):
         messages.success(request, "You have been logged out!")
         return redirect('login-view')
     
+
+class Http403View(View):
+    
+    def get(self, request):
+        return render(request, 'core/403.html')
+        
