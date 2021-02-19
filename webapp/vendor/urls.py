@@ -1,9 +1,8 @@
-from django.contrib import admin
 from django.urls import path
-from vendor import views
+from . import views
 
 
 urlpatterns = [
-    path('signup/', views.vendorSignUp,  name='vendor-signup-view'),
-    path('handleSignUp', views.handleSignUp, name='vendor-handle-signup-view'),
+    path('signup/',     views.VendorSignupView.as_view(),       name="vendor-signup-view"),
+    path('dashboard/',  views.VendorDashboardView.as_view(),    name="vendor-dashboard-view"),
 ]

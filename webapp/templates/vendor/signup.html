@@ -1,7 +1,7 @@
 {% extends 'core/base.html' %}
 
 {% block title %}
-Ticket User Signup
+Vendor Signup
 {% endblock %}
 
 
@@ -12,18 +12,18 @@ Ticket User Signup
 
 <div style="width: 50%; margin:auto; margin-top: 20%;">
 
-
     {% if messages %}
     {% for msg in messages %}
     <div style="background-color:gainsboro">{{ msg }}</div>
     {% endfor %}
     {% endif %}
 
+
     <div>
-        <h3>User Registration Form</h3>
+        <h3>Vendor Registration Form</h3>
     </div>
 
-    <form class="form-horizontal" action="{% url 'ticketuser-signup-view' %}" method="POST">
+    <form class="form-horizontal" action="{% url 'vendor-signup-view' %}" method="POST">
 
         {% csrf_token %}
 
@@ -38,8 +38,18 @@ Ticket User Signup
         </div>
 
         <div class="mb-3">
-            <label for="full_name" class="form-label">Full Name</label>
-            <input type="text" class="form-control" id="full_name" placeholder="John Doe" name="full_name">
+            <label for="full_name" class="form-label">Business Name</label>
+            <input type="text" class="form-control" id="full_name" placeholder="John Doe" name="vendor_name">
+        </div>
+
+        <div style="margin-top: 15px; margin-bottom: 15px;">
+            <select class="form-select" aria-label="Default select example" name="category">
+                <option selected>Select Category</option>
+                <option value="bus">Bus Service</option>
+                <option value="ship">Ship Service</option>
+                <option value="event">Event Management</option>
+                <option value="movie">Movie Theatre</option>
+            </select>
         </div>
 
         <div class="d-grid gap-2">

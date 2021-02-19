@@ -1,20 +1,40 @@
-from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.views import View
+from django.shortcuts import render, redirect
 from django.contrib import messages
+from .models import Vendor
+
+import hashlib
 
 
-def vendorSignUp(request):
-        return render(request, 'vendor/vendorSignUp.html')
+class VendorSignupView(View):
 
-def handleSignUp(request):
+    def get(self, request):
+        return render(request, 'vendor/signup.html')
 
-        if(request.method == 'POST'):
-            vendorEmail= request.POST['vendorEmail']
-            vendorEmail= request.POST['vendorEmail']
-            vendorPassword = request.POST['vendorPassword']
-            vendorAddress = request.POST['vendorAddress']
+    def post(self, request):
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        password = hashlib.sha256(password.encode()).hexdigest()
+        vendor_name = request.POST.get("vendor_name")
+        category = request.POST.get("category")
 
-        print(vendorName, vendorEmail, vendorPassword)
-        
-        return HttpResponse('signup successful')
+        email_count = Vendor.objects.filter(email=email)
+        email_count = len(email_count)
+
+        if email_count > 0:
+            messages.error(request, "A vendor account with this email exists.")
+            return redirect('vendor-signup-view')
+
+        else:
+            vendor = Vendor(email=email, password=password, vendor_name=vendor_name, category=category)
+            vendor.save()
+            print(vendor_name)
+            messages.success(request, "A vendor account has been created !")
+            return redirect('login-view')
+
+
+class VendorDashboardView(View):
+
+    def get(self, request):
+        return render(request, 'vendor/dashboard.html')
+

@@ -10,7 +10,7 @@ class Vendor(models.Model):
     password = models.TextField(null=False)
 
     vendor_name = models.TextField(null=False)
-    vendor_type = models.TextField(null=False)
+    category = models.TextField(null=False)
     unique_hash = models.TextField()
 
     def __str__(self):

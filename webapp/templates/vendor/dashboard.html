@@ -1,0 +1,39 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+
+{% block headline %}
+Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div style="margin-top: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+    <h4 style="text-align: center;">
+        Verify Ticket
+    </h4>
+</div>
+
+<div>
+    <form action="{% url 'verify-ticket-view' %}" method="POST">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Enter ticket hash" aria-label="Enter ticket hash"
+                aria-describedby="button-addon2" name="ticket_hash">
+            <button class="btn btn-success" type="submit" id="button-addon2">Verify Ticket</button>
+        </div>
+    </form>
+</div>
+
+
+<div style="margin-top: 60px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+    <h4 style="text-align: center;">
+        Issue New Tickets
+    </h4>
+</div>
+
+
+{% endblock %}

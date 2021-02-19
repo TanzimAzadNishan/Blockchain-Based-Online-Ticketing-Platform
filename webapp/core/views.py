@@ -47,7 +47,7 @@ class UserLoginView(View):
                     messages.error(request, "Wrong Password !")
                     return redirect('login-view')
 
-        elif user_type == "vendor":            
+        elif user_type == "vendor":
             vendor = Vendor.objects.filter(email=email)
 
             if len(vendor) == 0:

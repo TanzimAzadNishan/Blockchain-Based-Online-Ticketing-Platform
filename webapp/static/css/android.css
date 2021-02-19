@@ -50,7 +50,7 @@ a img {
 }
 
 .android-header .material-icons {
-    color: #df2121 !important;
+    color: #ab00dfe7 !important;
 }
 
 .android-header .mdl-navigation__link {
@@ -60,7 +60,7 @@ a img {
 }
 
 .android-header .mdl-navigation__link:hover {
-    border-bottom: 3px solid #df2121;
+    border-bottom: 3px solid #ab00dfe7;
 }
 
 .android-navigation-container {
