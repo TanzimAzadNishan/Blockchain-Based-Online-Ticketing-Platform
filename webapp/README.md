@@ -14,8 +14,8 @@
 - /ticket/id/<string: ticket_hash>
 - /ticket/bus/
 - /ticket/ship/
-- /ticket/events/
-- /ticket/movies/
+- /ticket/event/
+- /ticket/movie/
 
 #### Vendor App: /vendor/
 - /vendor/
