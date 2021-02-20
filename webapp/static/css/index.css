@@ -58,43 +58,47 @@ table a {
     border-radius: 4px;
     padding: 8px;
     font-size: 16px;
-    font-family: "Product Sans";
+    font-family: Roboto, sans-serif;
     margin-bottom: 10px;
 }
 
 .message-box-success {
-    background-color: #47fc47a8;
+    background-color: #408500;
+    color: white;
     border-radius: 4px;
     padding: 8px;
     font-size: 16px;
-    font-family: "Product Sans";
+    font-family: Roboto, sans-serif;
     margin-bottom: 10px;
 }
 
 .message-box-warning {
-    background-color: #fff349e0;
+    background-color: #a18900;
+    color: white;
     border-radius: 4px;
     padding: 8px;
     font-size: 16px;
-    font-family: "Product Sans";
+    font-family: Roboto, sans-serif;
     margin-bottom: 10px;
 }
 
 .message-box-error {
-    background-color: #df2121ab;
+    background-color: #940000;
+    color: white;
     border-radius: 4px;
     padding: 8px;
     font-size: 16px;
-    font-family: "Product Sans";
+    font-family: Roboto, sans-serif;
     margin-bottom: 10px;
 }
 
 .message-box-info {
-    background-color: #238becab;
+    background-color: #002c55;
+    color: white;
     border-radius: 4px;
     padding: 8px;
     font-size: 16px;
-    font-family: "Product Sans";
+    font-family: Roboto, sans-serif;
     margin-bottom: 10px;
 }
 
