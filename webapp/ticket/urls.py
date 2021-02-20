@@ -8,4 +8,5 @@ urlpatterns = [
     path('movie/',                  views.MovieTicketListView.as_view(),   name="movie-ticket-list-view"),
     path('event/',                  views.EventTicketListView.as_view(),   name="event-ticket-list-view"),
     path('verify/',                 views.VerifyTicketView.as_view(),       name='verify-ticket-view'),
+    path('issue/',                  views.IssueTicketView.as_view(),        name='issue-ticket-view'),
 ]

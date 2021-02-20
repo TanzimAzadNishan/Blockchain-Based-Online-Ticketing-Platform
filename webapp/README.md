@@ -19,4 +19,4 @@
 
 #### Vendor App: /vendor/
 - /vendor/dashboard/
-- /vendor/issue-ticket/
+- * /vendor/issue-ticket/
