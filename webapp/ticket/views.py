@@ -12,11 +12,11 @@ from datetime import datetime
 class TicketInfoView(View):
 
     @check_logged_in
-    def get(self, request, ticket_hash):
+    def get(self, request):
         """
         Fetch ticket information from the Blockchain network
         """
-        return render(request, 'ticket-info.html')
+        return render(request, 'ticket/ticket-info.html')
 
 
 class VerifyTicketView(View):
@@ -81,41 +81,60 @@ class EventTicketListView(View):
         }
         return render(request, 'ticket/ticket-list.html', context)
 
-"""
-Vendor interaction part
-"""
 
-class IssueTicketView(View):
+""" @TicketBuyView / @BuyTicketView """
+class BuyTicketView(View):
 
     def get(self, request):
-        return render(request, 'ticket/issue-ticket.html')
+        messages.success(request, "You have bought this ticket !")
+        return redirect('ticketuser-dashboard-view')
 
-    def post(self, request):        
-        group_name = request.POST.get('group_name')
-        vendor_id = request.session.get('user_id')
-        vendor = Vendor.objects.get(id=vendor_id)
+    def post(self, request):
+        owner_hash = request.POST.get('owner_hash')
+        ticketgroup_hash = request.POST.get('ticketgroup_hash')
+
+        """
+        BLOCKCHAIN NETWORK
+        -
+        Make smart contracts to sell ticket to this user and return the ticket hash.
+        """
+        # @param ticket_hash
+        return redirect('ticket-info-view')
+
+
+class ResellTicketView(View):
+
+    def get(self, request):
+        messages.success(request, "You have resell this ticket !")
+        return redirect('ticketuser-dashboard-view')
+
+    def post(self, request):
+
+        owner_hash = request.POST.get('owner_hash')
+        new_owner_hash = request.POST.get('new_owner_hash')
+        ticket_hash = request.POST.get('ticket_hash')
+        """
+        BLOCKCHAIN NETWORK
+        -
+        Make smart contracts to resell ticket to this receiver and return the ticket hash.
+        """
+        return redirect('ticketuser-dashboard-view')
+
+
+class RefundTicketView(View):
+
+    def get(self, request):
+        messages.success(request, "You have refund this ticket !")
+        return redirect('ticketuser-dashboard-view')
+
+    def post(self, request):
+        owner_hash = request.POST.get('owner_hash')
+        ticket_hash = request.POST.get('ticket_hash')
+
+        """
+        BLOCKCHAIN NETWORK
+        -
+        Make smart contracts to refund this ticket.
+        """
+        return redirect('ticketuser-dashboard-view')
         
-        n_ticket = request.POST.get('n_ticket')
-        n_ticket = int(n_ticket)
-        timestamp = request.POST.get('datetime')
-        price = request.POST.get('price')
-        price = int(price)
-
-        """
-            AT THIS PHASE,
-            ask the network to create an event and send back the hash
-        """
-        unique_hash = "..."
-
-        ticket_group = TicketGroup  (
-                                        vendor=vendor,
-                                        name=group_name,
-                                        n_ticket=n_ticket,
-                                        datetime=timestamp,
-                                        price=price,
-                                        unique_hash=unique_hash
-                                    )
-        ticket_group.save()
-
-        messages.success(request, "Ticket group has been created !")
-        return redirect('issue-ticket-view')

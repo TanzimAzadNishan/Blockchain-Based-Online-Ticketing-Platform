@@ -15,7 +15,7 @@ Ticket User Signup
 
     {% if messages %}
     {% for msg in messages %}
-    <div style="background-color:gainsboro">{{ msg }}</div>
+    <div class="message-box-{{ msg.tags }}">{{ msg }}</div>
     {% endfor %}
     {% endif %}
 

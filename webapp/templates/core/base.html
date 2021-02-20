@@ -52,7 +52,7 @@
                     {% elif request.session.user_type == 'vendor' %}
 
                     <a class="mdl-navigation__link" href="{% url 'vendor-dashboard-view' %}">Dashboard</a>
-                    <a class="mdl-navigation__link" href="{% url 'issue-ticket-view' %}">Issue Tickets</a>
+                    <a class="mdl-navigation__link" href="{% url 'issued-ticket-group-view' %}">Issued Tickets</a>
                     <a class="mdl-navigation__link" href="{% url 'logout-view' %}">Logout</a>
 
                     {% else %}

@@ -1,6 +1,8 @@
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
+from ticket.models import TicketGroup
 from .models import Vendor
 
 from core.utils import check_vendor
@@ -41,3 +43,53 @@ class VendorDashboardView(View):
     def get(self, request):
         return render(request, 'vendor/dashboard.html')
 
+
+class IssueTicketView(View):
+
+    def post(self, request):        
+        group_name = request.POST.get('group_name')
+        vendor_id = request.session.get('user_id')
+        vendor = Vendor.objects.get(id=vendor_id)
+        
+        n_ticket = request.POST.get('n_ticket')
+        n_ticket = int(n_ticket)
+        timestamp = request.POST.get('datetime')
+        price = request.POST.get('price')
+        price = int(price)
+
+        """
+            AT THIS PHASE,
+            ask the network to create an event and send back the hash
+        """
+        unique_hash = "..."
+
+        ticket_group = TicketGroup  (
+                                        vendor=vendor,
+                                        name=group_name,
+                                        n_ticket=n_ticket,
+                                        datetime=timestamp,
+                                        price=price,
+                                        unique_hash=unique_hash
+                                    )
+        ticket_group.save()
+
+        messages.success(request, "Ticket group has been created !")
+        return redirect('vendor-dashboard-view')
+
+
+""" issued ticket list """
+class IssuedTicketGroupView(View):
+
+    def get(self, request):
+        """
+            BLOCKCHAIN NETWORK
+            -
+            Query for the issued ticket groups?
+        """
+        vendor_id = request.session.get('user_id')
+        vendor = Vendor.objects.get(id=vendor_id)
+
+        ticketgroup_list = TicketGroup.objects.filter(vendor=vendor)
+        context = {'ticketgroup_list': ticketgroup_list}
+
+        return render(request, 'vendor/issued-ticket.html', context)
