@@ -42,7 +42,7 @@ public class EventContract implements Contract {
                 req.using("Issuer must be required singer.",
                         requiredSigners.contains(outputState.getOrganizer().getAgency().getOwningKey()));
                 req.using("Total no. of tickets must be positive.", outputState.getTotalTickets() > 0);
-                req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
+                //req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
 
                 return null;
             });
@@ -61,7 +61,7 @@ public class EventContract implements Contract {
                         inputState.getLinearId().equals(outputState.getLinearId()));
                 req.using("Issuer must be required singer.",
                         requiredSigners.contains(inputState.getOrganizer().getAgency().getOwningKey()));
-                req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
+                //req.using("There must be an event date.", !(outputState.getEventDate().equals("")));
 
                 return null;
             });

@@ -55,7 +55,7 @@ public class TicketIssueFlow {
         public SignedTransaction call() throws FlowException {
 
             // 1. Retrieve the VendorState from the vault using LinearStateQueryCriteria
-            List<UUID> listOfVendorIds = new ArrayList<>();
+            /*List<UUID> listOfVendorIds = new ArrayList<>();
             listOfVendorIds.add(vendorLinearId.getId());
             QueryCriteria queryCriteriaVendor =
                     new QueryCriteria.LinearStateQueryCriteria(null, listOfVendorIds);
@@ -79,25 +79,26 @@ public class TicketIssueFlow {
                     EventState.class, queryCriteriaEvent
             );
             StateAndRef eventStateRef = (StateAndRef) eventResults.getStates().get(0);
-            EventState eventState = (EventState) eventStateRef.getState().getData();
+            EventState eventState = (EventState) eventStateRef.getState().getData();*/
 
 
             Party notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
             Party ticketIssuer = getOurIdentity();
-            List<TicketState> allTickets = new ArrayList<>();
+            //List<TicketState> allTickets = new ArrayList<>();
 
             final TransactionBuilder builder = new TransactionBuilder(notary);
 
             for(int i = 0; i < noOfTicketsToBeIssued; i++){
-                TicketState ticketState = new TicketState(vendorState, price, refundAmount, eventDate, eventLinearId);
-                allTickets.add(ticketState);
+                TicketState ticketState = new TicketState(ticketIssuer, price, refundAmount, eventDate, vendorLinearId,
+                        eventLinearId);
+                //allTickets.add(ticketState);
                 builder.addOutputState(ticketState, TicketContract.ID);
             }
 
 
             //Update VendorState and EventState
             //vendorState.addTicketsToAEvent(allTickets, eventLinearId);
-            eventState.setIssuedTickets(allTickets);
+            //eventState.setIssuedTickets(allTickets);
 
             List<PublicKey> requiredSigners = new ArrayList<>();
             requiredSigners.add(ticketIssuer.getOwningKey());
@@ -112,7 +113,7 @@ public class TicketIssueFlow {
             //return signedTx;
 
             // Collect the other party's signature using the SignTransactionFlow.
-            List<Party> otherParties = allTickets.get(0).getParticipants()
+            /*List<Party> otherParties = allTickets.get(0).getParticipants()
                     .stream().map(el -> (Party)el)
                     .collect(Collectors.toList());
 
@@ -120,7 +121,8 @@ public class TicketIssueFlow {
 
             List<FlowSession> sessions = otherParties
                     .stream().map(el -> initiateFlow(el))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());*/
+            List<FlowSession> sessions = new ArrayList<>();
 
             final SignedTransaction signedTx = getServiceHub().signInitialTransaction(builder);
             SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(signedTx, sessions));

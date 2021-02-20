@@ -97,10 +97,15 @@ public class VendorState implements ContractState, LinearState {
         EventState eventState = getEventByLinearId(linearId);
         eventState.setIssuedTickets(issuedTickets);
     }
-    public void increaseBalance(double amount){
-        this.balance = this.balance + amount;
+    public VendorState withNewEvent(EventState event) {
+        //this.noOfOrganizedEvents++;
+        this.allEvents.add(event);
+        return new VendorState(agency, percentage, totalSales, noOfOrganizedEvents + 1, allEvents, balance, linearId);
     }
-    public void decreaseBalance(double amount){
-        this.balance = this.balance - amount;
+    public VendorState updateBalanceAfterSell(double amount){
+        return new VendorState(agency, percentage, totalSales + 1, noOfOrganizedEvents, allEvents, balance + amount, linearId);
+    }
+    public VendorState updateBalanceAfterRefund(double amount){
+        return new VendorState(agency, percentage, totalSales - 1, noOfOrganizedEvents, allEvents, balance - amount, linearId);
     }
 }

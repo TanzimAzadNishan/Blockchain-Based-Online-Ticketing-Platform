@@ -4,6 +4,7 @@ import Contracts.UserContract;
 import com.google.common.collect.ImmutableList;
 import net.corda.core.contracts.BelongsToContract;
 import net.corda.core.contracts.ContractState;
+import net.corda.core.contracts.LinearState;
 import net.corda.core.contracts.UniqueIdentifier;
 import net.corda.core.identity.AbstractParty;
 import net.corda.core.identity.Party;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 @BelongsToContract(UserContract.class)
-public class UserState implements ContractState {
+public class UserState implements ContractState, LinearState {
     // The attributes that will be stored on the ledger as part of the state.
     private Party user;
     private int noOfTicketsBought;
@@ -64,10 +65,25 @@ public class UserState implements ContractState {
         return ImmutableList.of(user);
     }
 
-    public void increaseBalance(double amount){
-        this.balance = this.balance + amount;
-    }
     public void decreaseBalance(double amount){
         this.balance = this.balance - amount;
+    }
+
+    @NotNull
+    @Override
+    public UniqueIdentifier getLinearId() {
+        return null;
+    }
+    public UserState updateBalanceAfterBuy(double amount){
+        return new UserState(user, noOfTicketsBought + 1, noOfTicketsRefunded, noOfTicketsReSold,
+                balance - amount, linearId);
+    }
+    public UserState updateBalanceAfterRefund(double amount){
+        return new UserState(user, noOfTicketsBought - 1, noOfTicketsRefunded + 1, noOfTicketsReSold,
+                balance + amount, linearId);
+    }
+    public UserState updateBalanceAfterResell(double amount){
+        return new UserState(user, noOfTicketsBought, noOfTicketsRefunded, noOfTicketsReSold + 1,
+                balance + amount, linearId);
     }
 }

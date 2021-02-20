@@ -1,9 +1,11 @@
 package Flows;
 
 import Contracts.EventContract;
+import Contracts.VendorContract;
 import States.EventState;
 import States.VendorState;
 import co.paralleluniverse.fibers.Suspendable;
+import com.google.common.collect.ImmutableList;
 import net.corda.core.contracts.Command;
 import net.corda.core.contracts.StateAndRef;
 import net.corda.core.contracts.UniqueIdentifier;
@@ -43,13 +45,25 @@ public class EventRegisterFlow {
             // 1. Retrieve the VendorState from the vault using LinearStateQueryCriteria
             List<UUID> listOfVendorIds = new ArrayList<>();
             listOfVendorIds.add(vendorLinearId.getId());
-            QueryCriteria queryCriteriaVendor =
-                    new QueryCriteria.LinearStateQueryCriteria(null, listOfVendorIds);
+            QueryCriteria queryCriteriaVendor = new QueryCriteria.LinearStateQueryCriteria(null,
+                    listOfVendorIds);
+            /*QueryCriteria queryCriteriaVendor =
+                    new QueryCriteria.LinearStateQueryCriteria(null, ImmutableList.of(vendorLinearId),
+                            Vault.StateStatus.UNCONSUMED,  null);
+            List<StateAndRef<VendorState>> stateAndRefList = getServiceHub().getVaultService().queryBy(VendorState.class,
+                    queryCriteriaVendor).getStates();
+
+            if (stateAndRefList.size() != 1) {
+                throw new FlowException(stateAndRefList.size() + "  " + stateAndRefList.toString());
+            }
+
+            VendorState vendorState = stateAndRefList.get(0).getState().getData();
+            if(vendorState == null){
+                throw new FlowException("vendor state is null");
+            }*/
 
             // 2. Get a reference to the inputState data that we are going to settle.
-            Vault.Page vendorResults = getServiceHub().getVaultService().queryBy(
-                    VendorState.class, queryCriteriaVendor
-            );
+            Vault.Page vendorResults = getServiceHub().getVaultService().queryBy(VendorState.class, queryCriteriaVendor);
             StateAndRef vendorStateRef = (StateAndRef) vendorResults.getStates().get(0);
             VendorState vendorState = (VendorState) vendorStateRef.getState().getData();
 
@@ -61,28 +75,33 @@ public class EventRegisterFlow {
             final TransactionBuilder builder = new TransactionBuilder(notary);
 
             //Update VendorState
-            vendorState.addNewEvent(eventState);
-
+            //vendorState.addNewEvent(eventState);
 
             List<PublicKey> requiredSigners = new ArrayList<>();
             requiredSigners.add(organizer.getOwningKey());
 
+            /*Party vendorStateTxNotary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(1);
+            final TransactionBuilder vendorStateTxBuilder = new TransactionBuilder(vendorStateTxNotary);
+            Command<VendorContract.Commands.Update> vendorStateTxCommand =
+                    new Command<>(new VendorContract.Commands.Update(), requiredSigners);
+            vendorStateTxBuilder.addCommand(vendorStateTxCommand);
+            vendorStateTxBuilder.addInputState(vendorStateRef);
+            vendorStateTxBuilder.addOutputState(vendorState.withNewEvent(eventState), VendorContract.ID);
+            vendorStateTxBuilder.verify(getServiceHub());
+
+            List<FlowSession> vendorStateTxSessions = new ArrayList<>();
+            final SignedTransaction vendorStateTxPTx = getServiceHub().signInitialTransaction(builder);
+            SignedTransaction vendorStateTxSTx = subFlow(new CollectSignaturesFlow(vendorStateTxPTx, vendorStateTxSessions));
+            subFlow(new FinalityFlow(vendorStateTxSTx, vendorStateTxSessions));*/
+
+
             Command<EventContract.Commands.Register> command =
                     new Command<>(new EventContract.Commands.Register(), requiredSigners);
-
             builder.addCommand(command);
             builder.addOutputState(eventState, EventContract.ID);
             builder.verify(getServiceHub());
 
-            List<Party> otherParties = eventState.getParticipants()
-                    .stream().map(el -> (Party)el)
-                    .collect(Collectors.toList());
-
-            otherParties.remove(getOurIdentity());
-
-            List<FlowSession> sessions = otherParties
-                    .stream().map(el -> initiateFlow(el))
-                    .collect(Collectors.toList());
+            List<FlowSession> sessions = new ArrayList<>();
 
             final SignedTransaction signedTx = getServiceHub().signInitialTransaction(builder);
             SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(signedTx, sessions));

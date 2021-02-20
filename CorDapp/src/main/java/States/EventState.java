@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @BelongsToContract(EventContract.class)
 public class EventState implements ContractState, LinearState {
@@ -107,6 +108,11 @@ public class EventState implements ContractState, LinearState {
         this.eventDate = eventDate;
         return this;
         //return new EventState(organizer, eventDate, issuedTickets, soldTickets, totalTickets, remainingTickets, linearId);
+    }
+
+    public EventState withUpdatedOrganizer(){
+        return new EventState(organizer.withNewEvent(this), eventDate, issuedTickets, soldTickets, totalTickets, remainingTickets,
+                linearId, vendorId);
     }
 
     public void replaceTicketStateOfAEvent(TicketState ticketState){

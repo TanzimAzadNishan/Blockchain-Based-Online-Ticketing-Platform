@@ -36,15 +36,12 @@ public class TicketRefundFlow {
     @StartableByRPC
     public static class TicketRefundFlowInitiator extends FlowLogic<SignedTransaction>{
 
-        private final UniqueIdentifier vendorLinearId;
-        private final UniqueIdentifier eventLinearId;
-        private final UniqueIdentifier userLinearId;
+        //private final UniqueIdentifier vendorLinearId;
+        //private final UniqueIdentifier eventLinearId;
+        //private final UniqueIdentifier userLinearId;
         private final UniqueIdentifier ticketLinearId;
 
-        public TicketRefundFlowInitiator(UniqueIdentifier vendorLinearId, UniqueIdentifier eventLinearId, UniqueIdentifier userLinearId, UniqueIdentifier ticketLinearId) {
-            this.vendorLinearId = vendorLinearId;
-            this.eventLinearId = eventLinearId;
-            this.userLinearId = userLinearId;
+        public TicketRefundFlowInitiator(UniqueIdentifier ticketLinearId) {
             this.ticketLinearId = ticketLinearId;
         }
 
@@ -76,15 +73,15 @@ public class TicketRefundFlow {
             Command<TicketContract.Commands.Refund> command =
                     new Command<>(new TicketContract.Commands.Refund(), requiredSigners);
 
-            TicketState outputState = inputStateToRefund;
-            outputState.withNoOwner();
+            TicketState outputState = inputStateToRefund.withNoOwner();
+            //outputState.withNoOwner();
 
             builder.addCommand(command);
             builder.addInputState(inputStateAndRefToRefund);
             builder.addOutputState(outputState, TicketContract.ID);
 
             // Ensure that this flow is being executed by current owner.
-            if (!inputStateToRefund.getCurrentOwner().getUser().getOwningKey().equals(getOurIdentity().getOwningKey())) {
+            if (!inputStateToRefund.getCurrentOwner().getOwningKey().equals(getOurIdentity().getOwningKey())) {
                 throw new IllegalArgumentException("This flow must be run by the current owner.");
             }
 
@@ -102,8 +99,8 @@ public class TicketRefundFlow {
                     .stream().map(el -> initiateFlow(el))
                     .collect(Collectors.toList());*/
 
-            FlowSession sessions = initiateFlow(inputStateToRefund.getTicketIssuer().getAgency());
-            sessions.send(inputStateToRefund);
+            FlowSession sessions = initiateFlow(inputStateToRefund.getTicketIssuer());
+            //sessions.send(inputStateToRefund);
 
             SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(partiallySignedTx, singletonList(sessions)));
 
@@ -147,7 +144,7 @@ public class TicketRefundFlow {
                 }
             }
 
-            TicketState ticketState = otherPartyFlow.receive(TicketState.class).unwrap(it -> {
+            /*TicketState ticketState = otherPartyFlow.receive(TicketState.class).unwrap(it -> {
                 return it;
             });
             UniqueIdentifier eventLinearId = ticketState.getEventId();
@@ -171,7 +168,7 @@ public class TicketRefundFlow {
             // update event states and balance
             eventState.markTicketAsUnsold(ticketState);
             vendorState.decreaseBalance(ticketState.getRefundAmount());
-            userState.increaseBalance(ticketState.getRefundAmount());
+            userState.increaseBalance(ticketState.getRefundAmount());*/
 
 
             // Create a sign transaction flow

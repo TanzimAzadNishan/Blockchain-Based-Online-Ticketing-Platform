@@ -41,7 +41,7 @@ public class VendorContract implements Contract {
 
                 VendorState outputState = (VendorState) outputs.get(0);
 
-                req.using("Vendor must be required singer.",
+                req.using("Vendor must be required signer.",
                         requiredSigners.contains(outputState.getAgency().getOwningKey()));
                 req.using("Percentage must be positive.", outputState.getPercentage() > 0);
 
@@ -61,7 +61,7 @@ public class VendorContract implements Contract {
 
                 req.using("A Vendor's linear id is unique",
                         inputState.getLinearId().equals(outputState.getLinearId()));
-                req.using("Vendor must be required singer.",
+                req.using("Vendor must be required signer.",
                         requiredSigners.contains(inputState.getAgency().getOwningKey()));
 
                 return null;

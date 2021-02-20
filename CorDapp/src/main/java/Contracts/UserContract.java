@@ -17,6 +17,7 @@ public class UserContract  implements Contract {
 
     public interface Commands extends CommandData {
         class Register extends TypeOnlyCommandData implements UserContract.Commands {}
+        class Update extends TypeOnlyCommandData implements UserContract.Commands {}
     }
 
     @Override
@@ -33,17 +34,38 @@ public class UserContract  implements Contract {
 
         if(commandData instanceof UserContract.Commands.Register){
             requireThat(req -> {
-                req.using("No inputs should be consumed when registering a vendor.", inputs.size() == 0);
-                req.using( "Only one output state should be created when registering a vendor.", outputs.size() == 1);
+                req.using("No inputs should be consumed when registering a user.", inputs.size() == 0);
+                req.using( "Only one output state should be created when registering a user.", outputs.size() == 1);
                 req.using("Output must be a UserState.", outputs.get(0) instanceof UserState);
 
                 UserState outputState = (UserState) outputs.get(0);
 
-                req.using("Vendor must be required singer.",
+                req.using("User must be required signer.",
                         requiredSigners.contains(outputState.getUser().getOwningKey()));
 
                 return null;
             });
+        }
+        else if(commandData instanceof UserContract.Commands.Update){
+            requireThat(req -> {
+                req.using("No inputs should be consumed when updating user state.", inputs.size() == 1);
+                req.using( "Only one output state should be created when updating user state.", outputs.size() == 1);
+                req.using("Input must be a UserState.", inputs.get(0) instanceof UserState);
+                req.using("Output must be a UserState.", outputs.get(0) instanceof UserState);
+
+                UserState inputState = (UserState) inputs.get(0);
+                UserState outputState = (UserState) outputs.get(0);
+
+                req.using("A User's linear id is unique",
+                        inputState.getLinearId().equals(outputState.getLinearId()));
+                req.using("User must be required signer.",
+                        requiredSigners.contains(inputState.getUser().getOwningKey()));
+
+                return null;
+            });
+        }
+        else {
+            throw new IllegalArgumentException("Command is not recognised");
         }
     }
 }

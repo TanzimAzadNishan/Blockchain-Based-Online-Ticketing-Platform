@@ -67,7 +67,7 @@ public class TicketUpdateFlow {
             builder.addOutputState(outputState, TicketContract.ID);
 
             // Ensure that this flow is being executed by ticket issuer.
-            if (!inputStateToUpdate.getTicketIssuer().getAgency().getOwningKey().equals(getOurIdentity().getOwningKey())) {
+            if (!inputStateToUpdate.getTicketIssuer().getOwningKey().equals(getOurIdentity().getOwningKey())) {
                 throw new IllegalArgumentException("This flow must be run by the ticket issuer.");
             }
 

@@ -44,7 +44,7 @@ public class UserRegisterFlow {
             builder.addOutputState(userState, UserContract.ID);
             builder.verify(getServiceHub());
 
-            List<Party> otherParties = userState.getParticipants()
+            /*List<Party> otherParties = userState.getParticipants()
                     .stream().map(el -> (Party)el)
                     .collect(Collectors.toList());
 
@@ -52,7 +52,9 @@ public class UserRegisterFlow {
 
             List<FlowSession> sessions = otherParties
                     .stream().map(el -> initiateFlow(el))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());*/
+
+            List<FlowSession> sessions = new ArrayList<>();
 
             final SignedTransaction signedTx = getServiceHub().signInitialTransaction(builder);
             SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(signedTx, sessions));

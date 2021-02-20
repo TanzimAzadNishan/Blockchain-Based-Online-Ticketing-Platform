@@ -26,11 +26,14 @@ public class EventUpdateFlow {
     @StartableByRPC
     public static class EventUpdateFlowInitiator extends FlowLogic<SignedTransaction>{
 
-        private final String eventDate;
+        //private String eventDate;
         private final UniqueIdentifier eventLinearId;
 
-        public EventUpdateFlowInitiator(String eventDate, UniqueIdentifier eventLinearId) {
+        /*public EventUpdateFlowInitiator(String eventDate, UniqueIdentifier eventLinearId) {
             this.eventDate = eventDate;
+            this.eventLinearId = eventLinearId;
+        }*/
+        public EventUpdateFlowInitiator(UniqueIdentifier eventLinearId) {
             this.eventLinearId = eventLinearId;
         }
 
@@ -60,7 +63,8 @@ public class EventUpdateFlow {
                     new Command<>(new EventContract.Commands.Update(), requiredSigners);
 
 
-            EventState outputState = inputStateToUpdate.withNewEventDate(eventDate);
+            //EventState outputState = inputStateToUpdate.withNewEventDate(eventDate);
+            EventState outputState = inputStateToUpdate.withUpdatedOrganizer();
 
             builder.addCommand(command);
             builder.addInputState(inputStateAndRefToUpdate);
@@ -76,7 +80,7 @@ public class EventUpdateFlow {
             final SignedTransaction partiallySignedTx = getServiceHub().signInitialTransaction(builder);
 
             // Collect the other party's signature using the SignTransactionFlow.
-            List<Party> otherParties = outputState.getParticipants()
+            /*List<Party> otherParties = outputState.getParticipants()
                     .stream().map(el -> (Party)el)
                     .collect(Collectors.toList());
 
@@ -84,8 +88,9 @@ public class EventUpdateFlow {
 
             List<FlowSession> sessions = otherParties
                     .stream().map(el -> initiateFlow(el))
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toList());*/
 
+            List<FlowSession> sessions = new ArrayList<>();
             SignedTransaction fullySignedTx = subFlow(new CollectSignaturesFlow(partiallySignedTx, sessions));
 
             //  Return the output of the FinalityFlow which sends the transaction to the notary for verification
