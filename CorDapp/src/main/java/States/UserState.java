@@ -65,15 +65,12 @@ public class UserState implements ContractState, LinearState {
         return ImmutableList.of(user);
     }
 
-    public void decreaseBalance(double amount){
-        this.balance = this.balance - amount;
-    }
-
     @NotNull
     @Override
     public UniqueIdentifier getLinearId() {
-        return null;
+        return linearId;
     }
+
     public UserState updateBalanceAfterBuy(double amount){
         return new UserState(user, noOfTicketsBought + 1, noOfTicketsRefunded, noOfTicketsReSold,
                 balance - amount, linearId);

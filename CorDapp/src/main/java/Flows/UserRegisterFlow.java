@@ -1,7 +1,6 @@
 package Flows;
 
 import Contracts.UserContract;
-import Contracts.VendorContract;
 import States.UserState;
 import co.paralleluniverse.fibers.Suspendable;
 import net.corda.core.contracts.Command;
@@ -14,6 +13,7 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 public class UserRegisterFlow {
 

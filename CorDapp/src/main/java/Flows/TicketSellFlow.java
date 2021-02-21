@@ -62,20 +62,6 @@ public class TicketSellFlow {
             TicketState inputStateToSell = (TicketState) inputStateAndRefToSell.getState().getData();
 
 
-            // 1. Retrieve the UserState from the vault using LinearStateQueryCriteria
-            /*List<UUID> listOfUserIds = new ArrayList<>();
-            listOfUserIds.add(userLinearId.getId());
-            QueryCriteria queryCriteriaUser =
-                    new QueryCriteria.LinearStateQueryCriteria(null, listOfUserIds);
-
-            // 2. Get a reference to the inputState data that we are going to settle.
-            Vault.Page userResults = getServiceHub().getVaultService().queryBy(
-                    UserState.class, queryCriteriaUser
-            );
-            StateAndRef userStateRef = (StateAndRef) userResults.getStates().get(0);
-            UserState newUserState = (UserState) userStateRef.getState().getData();*/
-
-
             Party notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
             final TransactionBuilder builder = new TransactionBuilder(notary);
 
