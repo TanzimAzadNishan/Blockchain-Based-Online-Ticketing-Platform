@@ -1,0 +1,32 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Issue New Tickets
+{% endblock %}
+
+
+{% block content %}
+
+{% if messages %}
+{% for msg in messages %}
+<div style="background-color:gainsboro">{{ msg }}</div>
+{% endfor %}
+{% endif %}
+
+{% for item in ticketgroup_list %}
+
+<div class="card-holder">
+    <div class="card">
+        <p class="card-header" style="font-size: 20px;">{{ item.name }}</p>
+        <div class="card-body">
+            <h5 class="card-title">#{{ item.unique_hash }}</h5>
+            <h6 class="card-title">Total Tickets: {{ item.n_ticket }}</h6>
+            <p class="card-text">Date & Time: {{ item.datetime }}   |   Price: {{ item.price }}</p>
+            <a href="#" class="btn btn-warning">View Tickets</a>
+        </div>
+    </div>
+</div>
+
+{% endfor %}
+
+{% endblock %}

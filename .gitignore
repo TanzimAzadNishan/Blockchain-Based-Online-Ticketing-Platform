@@ -1,5 +1,11 @@
-/.pyc
+/*.pyc
 **/.vscode
 **/.idea
 **/venv
 /*.sqlite3
+__pycache__
+migrations
+**/__pycache__
+**/*.pyc
+*.pyc
+*.sqlite3

@@ -2,15 +2,21 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib import messages
 
-from .utils import verify_auth_token
+from .utils import check_logged_in
 from ticketuser.models import TicketUser
 from vendor.models import Vendor
 
 import hashlib
 
 
-class UserLoginView(View):
+class IndexView(View):
 
+    def get(self, request):
+        return render(request, 'core/index.html')
+
+
+class UserLoginView(View):
+    
     def get(self, request):
         return render(request, 'core/login.html')
 
@@ -41,7 +47,7 @@ class UserLoginView(View):
                     messages.error(request, "Wrong Password !")
                     return redirect('login-view')
 
-        elif user_type == "vendor":            
+        elif user_type == "vendor":
             vendor = Vendor.objects.filter(email=email)
 
             if len(vendor) == 0:
@@ -75,3 +81,9 @@ class UserLogoutView(View):
         messages.success(request, "You have been logged out!")
         return redirect('login-view')
     
+
+class Http403View(View):
+    
+    def get(self, request):
+        return render(request, 'core/403.html')
+        

@@ -1,0 +1,63 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+Vendor Signup
+{% endblock %}
+
+
+{% block headline %}
+{% endblock %}
+
+{% block content %}
+
+<div style="width: 50%; margin:auto; margin-top: 20%;">
+
+    {% if messages %}
+    {% for msg in messages %}
+    <div class="message-box-{{ msg.tags }}">{{ msg }}</div>
+    {% endfor %}
+    {% endif %}
+
+
+    <div>
+        <h3>Vendor Registration Form</h3>
+    </div>
+
+    <form class="form-horizontal" action="{% url 'vendor-signup-view' %}" method="POST">
+
+        {% csrf_token %}
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="email" placeholder="name@example.com" name="email">
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+        </div>
+
+        <div class="mb-3">
+            <label for="full_name" class="form-label">Business Name</label>
+            <input type="text" class="form-control" id="full_name" placeholder="John Doe" name="vendor_name">
+        </div>
+
+        <div style="margin-top: 15px; margin-bottom: 15px;">
+            <select class="form-select" aria-label="Default select example" name="category">
+                <option selected>Select Category</option>
+                <option value="bus">Bus Service</option>
+                <option value="ship">Ship Service</option>
+                <option value="event">Event Management</option>
+                <option value="movie">Movie Theatre</option>
+            </select>
+        </div>
+
+        <div class="d-grid gap-2">
+            <button class="btn btn-primary" type="submit">Sign Me Up !</button>
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}

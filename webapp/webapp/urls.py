@@ -5,5 +5,6 @@ urlpatterns = [
     path('',        include('core.urls')),
     path('admin/',  admin.site.urls),
     path('user/',   include('ticketuser.urls')),
-    path('vendor/', include('vendor.urls'))
+    path('ticket/', include('ticket.urls')),
+    path('vendor/', include('vendor.urls')),
 ]
