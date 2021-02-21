@@ -95,10 +95,10 @@ class NetCordaCoreTransactionsWireTransaction(ModelNormal):
             'commands': ([NetCordaCoreContractsCommandObject],),  # noqa: E501
             'id': (str,),  # noqa: E501
             'required_signing_keys': ([str],),  # noqa: E501
-            'available_component_noncescore': ({str: ([str],)},),  # noqa: E501
             'group_hashescore': ([str],),  # noqa: E501
             'available_component_hashescore': ({str: ([str],)},),  # noqa: E501
             'groups_merkle_rootscore': ({str: (str,)},),  # noqa: E501
+            'available_component_noncescore': ({str: ([str],)},),  # noqa: E501
             'privacy_salt': (NetCordaCoreContractsPrivacySalt,),  # noqa: E501
             'notary': (NetCordaCoreIdentityParty,),  # noqa: E501
             'time_window': (NetCordaCoreContractsTimeWindow,),  # noqa: E501
@@ -118,10 +118,10 @@ class NetCordaCoreTransactionsWireTransaction(ModelNormal):
         'commands': 'commands',  # noqa: E501
         'id': 'id',  # noqa: E501
         'required_signing_keys': 'requiredSigningKeys',  # noqa: E501
-        'available_component_noncescore': 'availableComponentNonces$core',  # noqa: E501
         'group_hashescore': 'groupHashes$core',  # noqa: E501
         'available_component_hashescore': 'availableComponentHashes$core',  # noqa: E501
         'groups_merkle_rootscore': 'groupsMerkleRoots$core',  # noqa: E501
+        'available_component_noncescore': 'availableComponentNonces$core',  # noqa: E501
         'privacy_salt': 'privacySalt',  # noqa: E501
         'notary': 'notary',  # noqa: E501
         'time_window': 'timeWindow',  # noqa: E501
@@ -140,7 +140,7 @@ class NetCordaCoreTransactionsWireTransaction(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, attachments, inputs, references, outputs, commands, id, required_signing_keys, available_component_noncescore, group_hashescore, available_component_hashescore, groups_merkle_rootscore, *args, **kwargs):  # noqa: E501
+    def __init__(self, attachments, inputs, references, outputs, commands, id, required_signing_keys, group_hashescore, available_component_hashescore, groups_merkle_rootscore, available_component_noncescore, *args, **kwargs):  # noqa: E501
         """NetCordaCoreTransactionsWireTransaction - a model defined in OpenAPI
 
         Args:
@@ -151,10 +151,10 @@ class NetCordaCoreTransactionsWireTransaction(ModelNormal):
             commands ([NetCordaCoreContractsCommandObject]):
             id (str): Base 58 Encoded Secure Hash
             required_signing_keys ([str]):
-            available_component_noncescore ({str: ([str],)}):
             group_hashescore ([str]):
             available_component_hashescore ({str: ([str],)}):
             groups_merkle_rootscore ({str: (str,)}):
+            available_component_noncescore ({str: ([str],)}):
 
         Keyword Args:
             _check_type (bool): if True, values for parameters in openapi_types
@@ -223,10 +223,10 @@ class NetCordaCoreTransactionsWireTransaction(ModelNormal):
         self.commands = commands
         self.id = id
         self.required_signing_keys = required_signing_keys
-        self.available_component_noncescore = available_component_noncescore
         self.group_hashescore = group_hashescore
         self.available_component_hashescore = available_component_hashescore
         self.groups_merkle_rootscore = groups_merkle_rootscore
+        self.available_component_noncescore = available_component_noncescore
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \
                         self._configuration is not None and \

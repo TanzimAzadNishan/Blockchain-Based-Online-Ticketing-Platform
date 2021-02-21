@@ -3,6 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
+**new_user_linear_id** | [**NetCordaCoreContractsUniqueIdentifier**](NetCordaCoreContractsUniqueIdentifier.md) |  | 
 **ticket_linear_id** | [**NetCordaCoreContractsUniqueIdentifier**](NetCordaCoreContractsUniqueIdentifier.md) |  | 
 **new_owner** | [**NetCordaCoreIdentityParty**](NetCordaCoreIdentityParty.md) |  | 
 

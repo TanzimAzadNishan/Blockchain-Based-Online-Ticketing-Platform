@@ -431,6 +431,10 @@ with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = cordapps_api.CordappsApi(api_client)
     generated_flows_ticket_resell_flow_ticket_resell_flow_initiator_payload = GeneratedFlowsTicketResellFlowTicketResellFlowInitiatorPayload(
+        new_user_linear_id=NetCordaCoreContractsUniqueIdentifier(
+            external_id="external_id_example",
+            id="id_example",
+        ),
         ticket_linear_id=NetCordaCoreContractsUniqueIdentifier(
             external_id="external_id_example",
             id="id_example",
@@ -514,6 +518,10 @@ with openapi_client.ApiClient() as api_client:
     # Create an instance of the API class
     api_instance = cordapps_api.CordappsApi(api_client)
     generated_flows_ticket_sell_flow_ticket_sell_flow_initiator_payload = GeneratedFlowsTicketSellFlowTicketSellFlowInitiatorPayload(
+        user_linear_id=NetCordaCoreContractsUniqueIdentifier(
+            external_id="external_id_example",
+            id="id_example",
+        ),
         ticket_linear_id=NetCordaCoreContractsUniqueIdentifier(
             external_id="external_id_example",
             id="id_example",

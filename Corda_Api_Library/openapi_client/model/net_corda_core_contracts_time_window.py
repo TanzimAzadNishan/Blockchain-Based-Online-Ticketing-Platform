@@ -72,8 +72,8 @@ class NetCordaCoreContractsTimeWindow(ModelNormal):
         """
         return {
             'midpoint': (str,),  # noqa: E501
-            'until_time': (str,),  # noqa: E501
             'from_time': (str,),  # noqa: E501
+            'until_time': (str,),  # noqa: E501
         }
 
     @cached_property
@@ -83,8 +83,8 @@ class NetCordaCoreContractsTimeWindow(ModelNormal):
 
     attribute_map = {
         'midpoint': 'midpoint',  # noqa: E501
-        'until_time': 'untilTime',  # noqa: E501
         'from_time': 'fromTime',  # noqa: E501
+        'until_time': 'untilTime',  # noqa: E501
     }
 
     _composed_schemas = {}
@@ -134,8 +134,8 @@ class NetCordaCoreContractsTimeWindow(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             midpoint (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
-            until_time (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
             from_time (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
+            until_time (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)

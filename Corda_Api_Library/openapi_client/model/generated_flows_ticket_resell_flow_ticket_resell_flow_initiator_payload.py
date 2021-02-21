@@ -78,6 +78,7 @@ class GeneratedFlowsTicketResellFlowTicketResellFlowInitiatorPayload(ModelNormal
         """
         lazy_import()
         return {
+            'new_user_linear_id': (NetCordaCoreContractsUniqueIdentifier,),  # noqa: E501
             'ticket_linear_id': (NetCordaCoreContractsUniqueIdentifier,),  # noqa: E501
             'new_owner': (NetCordaCoreIdentityParty,),  # noqa: E501
         }
@@ -88,6 +89,7 @@ class GeneratedFlowsTicketResellFlowTicketResellFlowInitiatorPayload(ModelNormal
 
 
     attribute_map = {
+        'new_user_linear_id': 'newUserLinearId',  # noqa: E501
         'ticket_linear_id': 'ticketLinearId',  # noqa: E501
         'new_owner': 'newOwner',  # noqa: E501
     }
@@ -104,10 +106,11 @@ class GeneratedFlowsTicketResellFlowTicketResellFlowInitiatorPayload(ModelNormal
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, ticket_linear_id, new_owner, *args, **kwargs):  # noqa: E501
+    def __init__(self, new_user_linear_id, ticket_linear_id, new_owner, *args, **kwargs):  # noqa: E501
         """GeneratedFlowsTicketResellFlowTicketResellFlowInitiatorPayload - a model defined in OpenAPI
 
         Args:
+            new_user_linear_id (NetCordaCoreContractsUniqueIdentifier):
             ticket_linear_id (NetCordaCoreContractsUniqueIdentifier):
             new_owner (NetCordaCoreIdentityParty):
 
@@ -167,6 +170,7 @@ class GeneratedFlowsTicketResellFlowTicketResellFlowInitiatorPayload(ModelNormal
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
+        self.new_user_linear_id = new_user_linear_id
         self.ticket_linear_id = ticket_linear_id
         self.new_owner = new_owner
         for var_name, var_value in kwargs.items():
