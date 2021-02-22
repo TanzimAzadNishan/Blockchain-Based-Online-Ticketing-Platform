@@ -26,7 +26,7 @@ public class EventRegisterFlow {
 
     @InitiatingFlow
     @StartableByRPC
-    public static class EventRegisterFlowInitiator extends FlowLogic<SignedTransaction>{
+    public static class EventRegisterFlowInitiator extends FlowLogic<UniqueIdentifier>{
 
         private final UniqueIdentifier vendorLinearId;
         private final String eventDate;
@@ -40,7 +40,7 @@ public class EventRegisterFlow {
 
         @Suspendable
         @Override
-        public SignedTransaction call() throws FlowException {
+        public UniqueIdentifier call() throws FlowException {
 
             // 1. Retrieve the VendorState from the vault using LinearStateQueryCriteria
             List<UUID> listOfVendorIds = new ArrayList<>();
@@ -108,7 +108,8 @@ public class EventRegisterFlow {
 
             //  Return the output of the FinalityFlow which sends the transaction to the notary for verification
             //  and the causes it to be persisted to the vault of appropriate nodes.
-            return subFlow(new FinalityFlow(fullySignedTx, sessions));
+            subFlow(new FinalityFlow(fullySignedTx, sessions));
+            return eventState.getLinearId();
         }
     }
 }

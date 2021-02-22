@@ -5,6 +5,7 @@ import Contracts.VendorContract;
 import States.VendorState;
 import co.paralleluniverse.fibers.Suspendable;
 import net.corda.core.contracts.Command;
+import net.corda.core.contracts.UniqueIdentifier;
 import net.corda.core.flows.*;
 import net.corda.core.identity.Party;
 import net.corda.core.transactions.SignedTransaction;
@@ -22,7 +23,7 @@ public class VendorRegisterFlow {
 
     @InitiatingFlow
     @StartableByRPC
-    public static class VendorRegisterFlowInitiator extends FlowLogic<SignedTransaction>{
+    public static class VendorRegisterFlowInitiator extends FlowLogic<UniqueIdentifier>{
 
         private final double percentage;
 
@@ -32,7 +33,7 @@ public class VendorRegisterFlow {
 
         @Suspendable
         @Override
-        public SignedTransaction call() throws FlowException {
+        public UniqueIdentifier call() throws FlowException {
             Party notary = getServiceHub().getNetworkMapCache().getNotaryIdentities().get(0);
             Party agency = getOurIdentity();
 
@@ -65,7 +66,9 @@ public class VendorRegisterFlow {
 
             //  Return the output of the FinalityFlow which sends the transaction to the notary for verification
             //  and the causes it to be persisted to the vault of appropriate nodes.
-            return subFlow(new FinalityFlow(fullySignedTx, sessions));
+            subFlow(new FinalityFlow(fullySignedTx, sessions));
+
+            return vendorState.getLinearId();
         }
     }
 }
