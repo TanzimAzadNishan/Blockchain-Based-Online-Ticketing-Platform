@@ -10,10 +10,10 @@ Name | Type | Description | Notes
 **commands** | [**[NetCordaCoreContractsCommandObject]**](NetCordaCoreContractsCommandObject.md) |  | 
 **id** | **str** | Base 58 Encoded Secure Hash | 
 **required_signing_keys** | **[str]** |  | 
-**group_hashescore** | **[str]** |  | 
-**available_component_hashescore** | **{str: ([str],)}** |  | 
 **groups_merkle_rootscore** | **{str: (str,)}** |  | 
 **available_component_noncescore** | **{str: ([str],)}** |  | 
+**group_hashescore** | **[str]** |  | 
+**available_component_hashescore** | **{str: ([str],)}** |  | 
 **privacy_salt** | [**NetCordaCoreContractsPrivacySalt**](NetCordaCoreContractsPrivacySalt.md) |  | [optional] 
 **notary** | [**NetCordaCoreIdentityParty**](NetCordaCoreIdentityParty.md) |  | [optional] 
 **time_window** | [**NetCordaCoreContractsTimeWindow**](NetCordaCoreContractsTimeWindow.md) |  | [optional] 

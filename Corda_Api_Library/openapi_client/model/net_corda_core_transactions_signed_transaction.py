@@ -90,15 +90,15 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
         return {
             'sigs': ([NetCordaCoreCryptoTransactionSignature],),  # noqa: E501
             'id': (str,),  # noqa: E501
-            'notary_change_transaction': (bool,),  # noqa: E501
             'inputs': ([NetCordaCoreContractsStateRef],),  # noqa: E501
             'references': ([NetCordaCoreContractsStateRef],),  # noqa: E501
+            'notary_change_transaction': (bool,),  # noqa: E501
             'missing_signers': ([str],),  # noqa: E501
             'tx_bits': (NetCordaCoreSerializationSerializedBytesNetCordaCoreTransactionsCoreTransaction,),  # noqa: E501
+            'tx': (NetCordaCoreTransactionsWireTransaction,),  # noqa: E501
+            'notary': (NetCordaCoreIdentityParty,),  # noqa: E501
             'network_parameters_hash': (str,),  # noqa: E501
             'core_transaction': (NetCordaCoreTransactionsCoreTransaction,),  # noqa: E501
-            'notary': (NetCordaCoreIdentityParty,),  # noqa: E501
-            'tx': (NetCordaCoreTransactionsWireTransaction,),  # noqa: E501
         }
 
     @cached_property
@@ -109,15 +109,15 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
     attribute_map = {
         'sigs': 'sigs',  # noqa: E501
         'id': 'id',  # noqa: E501
-        'notary_change_transaction': 'notaryChangeTransaction',  # noqa: E501
         'inputs': 'inputs',  # noqa: E501
         'references': 'references',  # noqa: E501
+        'notary_change_transaction': 'notaryChangeTransaction',  # noqa: E501
         'missing_signers': 'missingSigners',  # noqa: E501
         'tx_bits': 'txBits',  # noqa: E501
+        'tx': 'tx',  # noqa: E501
+        'notary': 'notary',  # noqa: E501
         'network_parameters_hash': 'networkParametersHash',  # noqa: E501
         'core_transaction': 'coreTransaction',  # noqa: E501
-        'notary': 'notary',  # noqa: E501
-        'tx': 'tx',  # noqa: E501
     }
 
     _composed_schemas = {}
@@ -132,15 +132,15 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, sigs, id, notary_change_transaction, inputs, references, missing_signers, *args, **kwargs):  # noqa: E501
+    def __init__(self, sigs, id, inputs, references, notary_change_transaction, missing_signers, *args, **kwargs):  # noqa: E501
         """NetCordaCoreTransactionsSignedTransaction - a model defined in OpenAPI
 
         Args:
             sigs ([NetCordaCoreCryptoTransactionSignature]):
             id (str): Base 58 Encoded Secure Hash
-            notary_change_transaction (bool):
             inputs ([NetCordaCoreContractsStateRef]):
             references ([NetCordaCoreContractsStateRef]):
+            notary_change_transaction (bool):
             missing_signers ([str]):
 
         Keyword Args:
@@ -175,10 +175,10 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
             tx_bits (NetCordaCoreSerializationSerializedBytesNetCordaCoreTransactionsCoreTransaction): [optional]  # noqa: E501
+            tx (NetCordaCoreTransactionsWireTransaction): [optional]  # noqa: E501
+            notary (NetCordaCoreIdentityParty): [optional]  # noqa: E501
             network_parameters_hash (str): Base 58 Encoded Secure Hash. [optional]  # noqa: E501
             core_transaction (NetCordaCoreTransactionsCoreTransaction): [optional]  # noqa: E501
-            notary (NetCordaCoreIdentityParty): [optional]  # noqa: E501
-            tx (NetCordaCoreTransactionsWireTransaction): [optional]  # noqa: E501
         """
 
         _check_type = kwargs.pop('_check_type', True)
@@ -206,9 +206,9 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
 
         self.sigs = sigs
         self.id = id
-        self.notary_change_transaction = notary_change_transaction
         self.inputs = inputs
         self.references = references
+        self.notary_change_transaction = notary_change_transaction
         self.missing_signers = missing_signers
         for var_name, var_value in kwargs.items():
             if var_name not in self.attribute_map and \

@@ -30,8 +30,15 @@ from openapi_client.model.generated_flows_ticket_update_flow_ticket_update_flow_
 from openapi_client.model.generated_flows_user_update_flow_user_update_flow_initiator_payload import GeneratedFlowsUserUpdateFlowUserUpdateFlowInitiatorPayload
 from openapi_client.model.generated_flows_vendor_register_flow_vendor_register_flow_initiator_payload import GeneratedFlowsVendorRegisterFlowVendorRegisterFlowInitiatorPayload
 from openapi_client.model.generated_flows_vendor_update_flow_vendor_update_flow_initiator_payload import GeneratedFlowsVendorUpdateFlowVendorUpdateFlowInitiatorPayload
+from openapi_client.model.generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload import GeneratedQueryFlowsEventInfoByVendorEventInfoByVendorInitiatorPayload
+from openapi_client.model.generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload import GeneratedQueryFlowsTicketByEventIdTicketByEventIdInitiatorPayload
+from openapi_client.model.generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload import GeneratedQueryFlowsTicketByLinearIdTicketByLinearIdInitiatorPayload
+from openapi_client.model.generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload import GeneratedQueryFlowsTicketInfoByVendorTicketInfoByVendorInitiatorPayload
+from openapi_client.model.generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload import GeneratedQueryFlowsUserByLinearIdUserByLinearIdInitiatorPayload
+from openapi_client.model.generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload import GeneratedQueryFlowsVendorByLinearIdVendorByLinearIdInitiatorPayload
 from openapi_client.model.invocation_error import InvocationError
 from openapi_client.model.io_bluebank_braid_corda_server_progress_progress_notification import IoBluebankBraidCordaServerProgressProgressNotification
+from openapi_client.model.net_corda_core_contracts_unique_identifier import NetCordaCoreContractsUniqueIdentifier
 from openapi_client.model.net_corda_core_transactions_signed_transaction import NetCordaCoreTransactionsSignedTransaction
 
 
@@ -190,7 +197,7 @@ class CordappsApi(object):
                 async_req (bool): execute request asynchronously
 
             Returns:
-                NetCordaCoreTransactionsSignedTransaction
+                NetCordaCoreContractsUniqueIdentifier
                     If the method is called asynchronously, returns the request
                     thread.
             """
@@ -219,7 +226,7 @@ class CordappsApi(object):
 
         self.cordapps_cor_dapp_flows_flows_event_register_flow_event_register_flow_initiator = _Endpoint(
             settings={
-                'response_type': (NetCordaCoreTransactionsSignedTransaction,),
+                'response_type': (NetCordaCoreContractsUniqueIdentifier,),
                 'auth': [],
                 'endpoint_path': '/cordapps/CorDapp/flows/Flows.EventRegisterFlow$EventRegisterFlowInitiator',
                 'operation_id': 'cordapps_cor_dapp_flows_flows_event_register_flow_event_register_flow_initiator',
@@ -1051,7 +1058,7 @@ class CordappsApi(object):
                 async_req (bool): execute request asynchronously
 
             Returns:
-                NetCordaCoreTransactionsSignedTransaction
+                NetCordaCoreContractsUniqueIdentifier
                     If the method is called asynchronously, returns the request
                     thread.
             """
@@ -1080,7 +1087,7 @@ class CordappsApi(object):
 
         self.cordapps_cor_dapp_flows_flows_user_register_flow_user_register_flow_initiator = _Endpoint(
             settings={
-                'response_type': (NetCordaCoreTransactionsSignedTransaction,),
+                'response_type': (NetCordaCoreContractsUniqueIdentifier,),
                 'auth': [],
                 'endpoint_path': '/cordapps/CorDapp/flows/Flows.UserRegisterFlow$UserRegisterFlowInitiator',
                 'operation_id': 'cordapps_cor_dapp_flows_flows_user_register_flow_user_register_flow_initiator',
@@ -1297,7 +1304,7 @@ class CordappsApi(object):
                 async_req (bool): execute request asynchronously
 
             Returns:
-                NetCordaCoreTransactionsSignedTransaction
+                NetCordaCoreContractsUniqueIdentifier
                     If the method is called asynchronously, returns the request
                     thread.
             """
@@ -1326,7 +1333,7 @@ class CordappsApi(object):
 
         self.cordapps_cor_dapp_flows_flows_vendor_register_flow_vendor_register_flow_initiator = _Endpoint(
             settings={
-                'response_type': (NetCordaCoreTransactionsSignedTransaction,),
+                'response_type': (NetCordaCoreContractsUniqueIdentifier,),
                 'auth': [],
                 'endpoint_path': '/cordapps/CorDapp/flows/Flows.VendorRegisterFlow$VendorRegisterFlowInitiator',
                 'operation_id': 'cordapps_cor_dapp_flows_flows_vendor_register_flow_vendor_register_flow_initiator',
@@ -1502,6 +1509,750 @@ class CordappsApi(object):
             },
             api_client=api_client,
             callable=__cordapps_cor_dapp_flows_flows_vendor_update_flow_vendor_update_flow_initiator
+        )
+
+        def __cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator(
+            self,
+            generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload,
+            **kwargs
+        ):
+            """cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator(generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload, async_req=True)
+            >>> result = thread.get()
+
+            Args:
+                generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload (GeneratedQueryFlowsEventInfoByVendorEventInfoByVendorInitiatorPayload): payload
+
+            Keyword Args:
+                invocation_id (str): [optional]
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (float/tuple): timeout setting for this request. If one
+                    number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                str
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            kwargs['generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload'] = \
+                generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload
+            return self.call_with_http_info(**kwargs)
+
+        self.cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator = _Endpoint(
+            settings={
+                'response_type': (str,),
+                'auth': [],
+                'endpoint_path': '/cordapps/CorDapp/flows/QueryFlows.EventInfoByVendor$EventInfoByVendorInitiator',
+                'operation_id': 'cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload',
+                    'invocation_id',
+                ],
+                'required': [
+                    'generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload':
+                        (GeneratedQueryFlowsEventInfoByVendorEventInfoByVendorInitiatorPayload,),
+                    'invocation_id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'invocation_id': 'invocation-id',
+                },
+                'location_map': {
+                    'generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload': 'body',
+                    'invocation_id': 'header',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'text/plain',
+                    'application/json'
+                ],
+                'content_type': [
+                    'application/json'
+                ]
+            },
+            api_client=api_client,
+            callable=__cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator
+        )
+
+        def __cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator(
+            self,
+            generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload,
+            **kwargs
+        ):
+            """cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator(generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload, async_req=True)
+            >>> result = thread.get()
+
+            Args:
+                generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload (GeneratedQueryFlowsTicketByEventIdTicketByEventIdInitiatorPayload): payload
+
+            Keyword Args:
+                invocation_id (str): [optional]
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (float/tuple): timeout setting for this request. If one
+                    number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                str
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            kwargs['generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload'] = \
+                generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload
+            return self.call_with_http_info(**kwargs)
+
+        self.cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator = _Endpoint(
+            settings={
+                'response_type': (str,),
+                'auth': [],
+                'endpoint_path': '/cordapps/CorDapp/flows/QueryFlows.TicketByEventId$TicketByEventIdInitiator',
+                'operation_id': 'cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload',
+                    'invocation_id',
+                ],
+                'required': [
+                    'generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload':
+                        (GeneratedQueryFlowsTicketByEventIdTicketByEventIdInitiatorPayload,),
+                    'invocation_id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'invocation_id': 'invocation-id',
+                },
+                'location_map': {
+                    'generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload': 'body',
+                    'invocation_id': 'header',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'text/plain',
+                    'application/json'
+                ],
+                'content_type': [
+                    'application/json'
+                ]
+            },
+            api_client=api_client,
+            callable=__cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator
+        )
+
+        def __cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator(
+            self,
+            generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload,
+            **kwargs
+        ):
+            """cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator(generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload, async_req=True)
+            >>> result = thread.get()
+
+            Args:
+                generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload (GeneratedQueryFlowsTicketByLinearIdTicketByLinearIdInitiatorPayload): payload
+
+            Keyword Args:
+                invocation_id (str): [optional]
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (float/tuple): timeout setting for this request. If one
+                    number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                str
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            kwargs['generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload'] = \
+                generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload
+            return self.call_with_http_info(**kwargs)
+
+        self.cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator = _Endpoint(
+            settings={
+                'response_type': (str,),
+                'auth': [],
+                'endpoint_path': '/cordapps/CorDapp/flows/QueryFlows.TicketByLinearId$TicketByLinearIdInitiator',
+                'operation_id': 'cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload',
+                    'invocation_id',
+                ],
+                'required': [
+                    'generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload':
+                        (GeneratedQueryFlowsTicketByLinearIdTicketByLinearIdInitiatorPayload,),
+                    'invocation_id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'invocation_id': 'invocation-id',
+                },
+                'location_map': {
+                    'generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload': 'body',
+                    'invocation_id': 'header',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'text/plain',
+                    'application/json'
+                ],
+                'content_type': [
+                    'application/json'
+                ]
+            },
+            api_client=api_client,
+            callable=__cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator
+        )
+
+        def __cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator(
+            self,
+            generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload,
+            **kwargs
+        ):
+            """cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator(generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload, async_req=True)
+            >>> result = thread.get()
+
+            Args:
+                generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload (GeneratedQueryFlowsTicketInfoByVendorTicketInfoByVendorInitiatorPayload): payload
+
+            Keyword Args:
+                invocation_id (str): [optional]
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (float/tuple): timeout setting for this request. If one
+                    number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                str
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            kwargs['generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload'] = \
+                generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload
+            return self.call_with_http_info(**kwargs)
+
+        self.cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator = _Endpoint(
+            settings={
+                'response_type': (str,),
+                'auth': [],
+                'endpoint_path': '/cordapps/CorDapp/flows/QueryFlows.TicketInfoByVendor$TicketInfoByVendorInitiator',
+                'operation_id': 'cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload',
+                    'invocation_id',
+                ],
+                'required': [
+                    'generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload':
+                        (GeneratedQueryFlowsTicketInfoByVendorTicketInfoByVendorInitiatorPayload,),
+                    'invocation_id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'invocation_id': 'invocation-id',
+                },
+                'location_map': {
+                    'generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload': 'body',
+                    'invocation_id': 'header',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'text/plain',
+                    'application/json'
+                ],
+                'content_type': [
+                    'application/json'
+                ]
+            },
+            api_client=api_client,
+            callable=__cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator
+        )
+
+        def __cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator(
+            self,
+            generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload,
+            **kwargs
+        ):
+            """cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator(generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload, async_req=True)
+            >>> result = thread.get()
+
+            Args:
+                generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload (GeneratedQueryFlowsUserByLinearIdUserByLinearIdInitiatorPayload): payload
+
+            Keyword Args:
+                invocation_id (str): [optional]
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (float/tuple): timeout setting for this request. If one
+                    number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                str
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            kwargs['generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload'] = \
+                generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload
+            return self.call_with_http_info(**kwargs)
+
+        self.cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator = _Endpoint(
+            settings={
+                'response_type': (str,),
+                'auth': [],
+                'endpoint_path': '/cordapps/CorDapp/flows/QueryFlows.UserByLinearId$UserByLinearIdInitiator',
+                'operation_id': 'cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload',
+                    'invocation_id',
+                ],
+                'required': [
+                    'generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload':
+                        (GeneratedQueryFlowsUserByLinearIdUserByLinearIdInitiatorPayload,),
+                    'invocation_id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'invocation_id': 'invocation-id',
+                },
+                'location_map': {
+                    'generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload': 'body',
+                    'invocation_id': 'header',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'text/plain',
+                    'application/json'
+                ],
+                'content_type': [
+                    'application/json'
+                ]
+            },
+            api_client=api_client,
+            callable=__cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator
+        )
+
+        def __cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator(
+            self,
+            generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload,
+            **kwargs
+        ):
+            """cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator  # noqa: E501
+
+            This method makes a synchronous HTTP request by default. To make an
+            asynchronous HTTP request, please pass async_req=True
+
+            >>> thread = api.cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator(generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload, async_req=True)
+            >>> result = thread.get()
+
+            Args:
+                generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload (GeneratedQueryFlowsVendorByLinearIdVendorByLinearIdInitiatorPayload): payload
+
+            Keyword Args:
+                invocation_id (str): [optional]
+                _return_http_data_only (bool): response data without head status
+                    code and headers. Default is True.
+                _preload_content (bool): if False, the urllib3.HTTPResponse object
+                    will be returned without reading/decoding response data.
+                    Default is True.
+                _request_timeout (float/tuple): timeout setting for this request. If one
+                    number provided, it will be total request timeout. It can also
+                    be a pair (tuple) of (connection, read) timeouts.
+                    Default is None.
+                _check_input_type (bool): specifies if type checking
+                    should be done one the data sent to the server.
+                    Default is True.
+                _check_return_type (bool): specifies if type checking
+                    should be done one the data received from the server.
+                    Default is True.
+                _host_index (int/None): specifies the index of the server
+                    that we want to use.
+                    Default is read from the configuration.
+                async_req (bool): execute request asynchronously
+
+            Returns:
+                str
+                    If the method is called asynchronously, returns the request
+                    thread.
+            """
+            kwargs['async_req'] = kwargs.get(
+                'async_req', False
+            )
+            kwargs['_return_http_data_only'] = kwargs.get(
+                '_return_http_data_only', True
+            )
+            kwargs['_preload_content'] = kwargs.get(
+                '_preload_content', True
+            )
+            kwargs['_request_timeout'] = kwargs.get(
+                '_request_timeout', None
+            )
+            kwargs['_check_input_type'] = kwargs.get(
+                '_check_input_type', True
+            )
+            kwargs['_check_return_type'] = kwargs.get(
+                '_check_return_type', True
+            )
+            kwargs['_host_index'] = kwargs.get('_host_index')
+            kwargs['generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload'] = \
+                generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload
+            return self.call_with_http_info(**kwargs)
+
+        self.cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator = _Endpoint(
+            settings={
+                'response_type': (str,),
+                'auth': [],
+                'endpoint_path': '/cordapps/CorDapp/flows/QueryFlows.VendorByLinearId$VendorByLinearIdInitiator',
+                'operation_id': 'cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator',
+                'http_method': 'POST',
+                'servers': None,
+            },
+            params_map={
+                'all': [
+                    'generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload',
+                    'invocation_id',
+                ],
+                'required': [
+                    'generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload',
+                ],
+                'nullable': [
+                ],
+                'enum': [
+                ],
+                'validation': [
+                ]
+            },
+            root_map={
+                'validations': {
+                },
+                'allowed_values': {
+                },
+                'openapi_types': {
+                    'generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload':
+                        (GeneratedQueryFlowsVendorByLinearIdVendorByLinearIdInitiatorPayload,),
+                    'invocation_id':
+                        (str,),
+                },
+                'attribute_map': {
+                    'invocation_id': 'invocation-id',
+                },
+                'location_map': {
+                    'generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload': 'body',
+                    'invocation_id': 'header',
+                },
+                'collection_format_map': {
+                }
+            },
+            headers_map={
+                'accept': [
+                    'text/plain',
+                    'application/json'
+                ],
+                'content_type': [
+                    'application/json'
+                ]
+            },
+            api_client=api_client,
+            callable=__cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator
         )
 
         def __cordapps_cordapp_flows(

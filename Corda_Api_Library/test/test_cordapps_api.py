@@ -94,6 +94,42 @@ class TestCordappsApi(unittest.TestCase):
         """
         pass
 
+    def test_cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator(self):
+        """Test case for cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator
+
+        """
+        pass
+
+    def test_cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator(self):
+        """Test case for cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator
+
+        """
+        pass
+
+    def test_cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator(self):
+        """Test case for cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator
+
+        """
+        pass
+
+    def test_cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator(self):
+        """Test case for cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator
+
+        """
+        pass
+
+    def test_cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator(self):
+        """Test case for cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator
+
+        """
+        pass
+
+    def test_cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator(self):
+        """Test case for cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator
+
+        """
+        pass
+
     def test_cordapps_cordapp_flows(self):
         """Test case for cordapps_cordapp_flows
 

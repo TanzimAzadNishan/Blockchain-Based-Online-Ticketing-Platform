@@ -60,8 +60,15 @@ from openapi_client.model.generated_flows_ticket_update_flow_ticket_update_flow_
 from openapi_client.model.generated_flows_user_update_flow_user_update_flow_initiator_payload import GeneratedFlowsUserUpdateFlowUserUpdateFlowInitiatorPayload
 from openapi_client.model.generated_flows_vendor_register_flow_vendor_register_flow_initiator_payload import GeneratedFlowsVendorRegisterFlowVendorRegisterFlowInitiatorPayload
 from openapi_client.model.generated_flows_vendor_update_flow_vendor_update_flow_initiator_payload import GeneratedFlowsVendorUpdateFlowVendorUpdateFlowInitiatorPayload
+from openapi_client.model.generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload import GeneratedQueryFlowsEventInfoByVendorEventInfoByVendorInitiatorPayload
+from openapi_client.model.generated_query_flows_ticket_by_event_id_ticket_by_event_id_initiator_payload import GeneratedQueryFlowsTicketByEventIdTicketByEventIdInitiatorPayload
+from openapi_client.model.generated_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator_payload import GeneratedQueryFlowsTicketByLinearIdTicketByLinearIdInitiatorPayload
+from openapi_client.model.generated_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator_payload import GeneratedQueryFlowsTicketInfoByVendorTicketInfoByVendorInitiatorPayload
+from openapi_client.model.generated_query_flows_user_by_linear_id_user_by_linear_id_initiator_payload import GeneratedQueryFlowsUserByLinearIdUserByLinearIdInitiatorPayload
+from openapi_client.model.generated_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator_payload import GeneratedQueryFlowsVendorByLinearIdVendorByLinearIdInitiatorPayload
 from openapi_client.model.invocation_error import InvocationError
 from openapi_client.model.io_bluebank_braid_corda_server_progress_progress_notification import IoBluebankBraidCordaServerProgressProgressNotification
+from openapi_client.model.net_corda_core_contracts_unique_identifier import NetCordaCoreContractsUniqueIdentifier
 from openapi_client.model.net_corda_core_transactions_signed_transaction import NetCordaCoreTransactionsSignedTransaction
 # Defining the host is optional and defaults to http://localhost:9004/api/rest
 # See configuration.py for a list of all supported configuration parameters.
@@ -101,6 +108,12 @@ Class | Method | HTTP request | Description
 *CordappsApi* | [**cordapps_cor_dapp_flows_flows_user_update_flow_user_update_flow_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_flows_user_update_flow_user_update_flow_initiator) | **POST** /cordapps/CorDapp/flows/Flows.UserUpdateFlow$UserUpdateFlowInitiator | 
 *CordappsApi* | [**cordapps_cor_dapp_flows_flows_vendor_register_flow_vendor_register_flow_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_flows_vendor_register_flow_vendor_register_flow_initiator) | **POST** /cordapps/CorDapp/flows/Flows.VendorRegisterFlow$VendorRegisterFlowInitiator | 
 *CordappsApi* | [**cordapps_cor_dapp_flows_flows_vendor_update_flow_vendor_update_flow_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_flows_vendor_update_flow_vendor_update_flow_initiator) | **POST** /cordapps/CorDapp/flows/Flows.VendorUpdateFlow$VendorUpdateFlowInitiator | 
+*CordappsApi* | [**cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator) | **POST** /cordapps/CorDapp/flows/QueryFlows.EventInfoByVendor$EventInfoByVendorInitiator | 
+*CordappsApi* | [**cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_query_flows_ticket_by_event_id_ticket_by_event_id_initiator) | **POST** /cordapps/CorDapp/flows/QueryFlows.TicketByEventId$TicketByEventIdInitiator | 
+*CordappsApi* | [**cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_query_flows_ticket_by_linear_id_ticket_by_linear_id_initiator) | **POST** /cordapps/CorDapp/flows/QueryFlows.TicketByLinearId$TicketByLinearIdInitiator | 
+*CordappsApi* | [**cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_query_flows_ticket_info_by_vendor_ticket_info_by_vendor_initiator) | **POST** /cordapps/CorDapp/flows/QueryFlows.TicketInfoByVendor$TicketInfoByVendorInitiator | 
+*CordappsApi* | [**cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_query_flows_user_by_linear_id_user_by_linear_id_initiator) | **POST** /cordapps/CorDapp/flows/QueryFlows.UserByLinearId$UserByLinearIdInitiator | 
+*CordappsApi* | [**cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator**](docs/CordappsApi.md#cordapps_cor_dapp_flows_query_flows_vendor_by_linear_id_vendor_by_linear_id_initiator) | **POST** /cordapps/CorDapp/flows/QueryFlows.VendorByLinearId$VendorByLinearIdInitiator | 
 *CordappsApi* | [**cordapps_cordapp_flows**](docs/CordappsApi.md#cordapps_cordapp_flows) | **GET** /cordapps/{cordapp}/flows | 
 *CordappsApi* | [**cordapps_progress_tracker**](docs/CordappsApi.md#cordapps_progress_tracker) | **GET** /cordapps/progress-tracker | 
 *NetworkApi* | [**network_nodes**](docs/NetworkApi.md#network_nodes) | **GET** /network/nodes | 
@@ -122,6 +135,12 @@ Class | Method | HTTP request | Description
  - [GeneratedFlowsUserUpdateFlowUserUpdateFlowInitiatorPayload](docs/GeneratedFlowsUserUpdateFlowUserUpdateFlowInitiatorPayload.md)
  - [GeneratedFlowsVendorRegisterFlowVendorRegisterFlowInitiatorPayload](docs/GeneratedFlowsVendorRegisterFlowVendorRegisterFlowInitiatorPayload.md)
  - [GeneratedFlowsVendorUpdateFlowVendorUpdateFlowInitiatorPayload](docs/GeneratedFlowsVendorUpdateFlowVendorUpdateFlowInitiatorPayload.md)
+ - [GeneratedQueryFlowsEventInfoByVendorEventInfoByVendorInitiatorPayload](docs/GeneratedQueryFlowsEventInfoByVendorEventInfoByVendorInitiatorPayload.md)
+ - [GeneratedQueryFlowsTicketByEventIdTicketByEventIdInitiatorPayload](docs/GeneratedQueryFlowsTicketByEventIdTicketByEventIdInitiatorPayload.md)
+ - [GeneratedQueryFlowsTicketByLinearIdTicketByLinearIdInitiatorPayload](docs/GeneratedQueryFlowsTicketByLinearIdTicketByLinearIdInitiatorPayload.md)
+ - [GeneratedQueryFlowsTicketInfoByVendorTicketInfoByVendorInitiatorPayload](docs/GeneratedQueryFlowsTicketInfoByVendorTicketInfoByVendorInitiatorPayload.md)
+ - [GeneratedQueryFlowsUserByLinearIdUserByLinearIdInitiatorPayload](docs/GeneratedQueryFlowsUserByLinearIdUserByLinearIdInitiatorPayload.md)
+ - [GeneratedQueryFlowsVendorByLinearIdVendorByLinearIdInitiatorPayload](docs/GeneratedQueryFlowsVendorByLinearIdVendorByLinearIdInitiatorPayload.md)
  - [InvocationError](docs/InvocationError.md)
  - [IoBluebankBraidCordaServerProgressProgressNotification](docs/IoBluebankBraidCordaServerProgressProgressNotification.md)
  - [IoBluebankBraidCordaServicesSimpleNodeInfo](docs/IoBluebankBraidCordaServicesSimpleNodeInfo.md)
