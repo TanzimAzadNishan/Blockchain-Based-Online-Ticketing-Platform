@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, HttpResponse
 from .models import Vendor
 
+from core.utils import check_vendor
+
 import hashlib
 
 

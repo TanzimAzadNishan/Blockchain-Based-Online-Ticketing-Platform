@@ -6,6 +6,18 @@ from .models import TicketUser
 from core.utils import check_ticketuser
 
 import hashlib
+import time
+import openapi_client
+
+import cordapps_api
+from openapi_client.model.net_corda_core_contracts_unique_identifier import NetCordaCoreContractsUniqueIdentifier
+from openapi_client.model.invocation_error import InvocationError
+from pprint import pprint
+# Defining the host is optional and defaults to http://localhost:9004/api/rest
+# See configuration.py for a list of all supported configuration parameters.
+configuration = openapi_client.Configuration(
+    host="http://localhost:9004/api/rest"
+)
 
 
 class TicketUserDashboardView(View):
@@ -20,6 +32,20 @@ class TicketUserSignUpView(View):
         return render(request, 'ticketuser/signup.html')
 
     def post(self, request):
+        with openapi_client.ApiClient() as api_client:
+            api_instance = cordapps_api.CordappsApi(api_client)
+            body = {}
+
+            try:
+                api_response = api_instance.cordapps_cor_dapp_flows_flows_user_register_flow_user_register_flow_initiator(body)
+                pprint(api_response)
+                print()
+                print()
+                print(api_response)
+                print()
+            except openapi_client.ApiException as e:
+                print("Exception when calling CordappsApi->cordapps_cor_dapp_flows_flows_user_register_flow_user_register_flow_initiator: %s\n" % e)
+
         email = request.POST.get('email')
         password = request.POST.get('password')
         password = hashlib.sha256(password.encode()).hexdigest()
@@ -33,7 +59,8 @@ class TicketUserSignUpView(View):
             return redirect('ticketuser-signup-view')
 
         else:
-            ticket_user = TicketUser(email=email, password=password, full_name=full_name)
+            ticket_user = TicketUser(
+                email=email, password=password, full_name=full_name)
             ticket_user.save()
             print(ticket_user)
             messages.success(request, "An account has been created !")
@@ -49,4 +76,3 @@ class TickerUserWalletView(View):
         of tickets for this user
         """
         return render(request, 'ticketuser/wallet.html')
-
