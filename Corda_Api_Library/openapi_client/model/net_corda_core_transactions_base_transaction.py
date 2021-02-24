@@ -80,8 +80,8 @@ class NetCordaCoreTransactionsBaseTransaction(ModelNormal):
         """
         lazy_import()
         return {
-            'inputs': ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}],),  # noqa: E501
             'references': ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}],),  # noqa: E501
+            'inputs': ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}],),  # noqa: E501
             'outputs': ([NetCordaCoreContractsTransactionStateNetCordaCoreContractsContractState],),  # noqa: E501
             'output_states': ([NetCordaCoreContractsContractState],),  # noqa: E501
             'id': (str,),  # noqa: E501
@@ -94,8 +94,8 @@ class NetCordaCoreTransactionsBaseTransaction(ModelNormal):
 
 
     attribute_map = {
-        'inputs': 'inputs',  # noqa: E501
         'references': 'references',  # noqa: E501
+        'inputs': 'inputs',  # noqa: E501
         'outputs': 'outputs',  # noqa: E501
         'output_states': 'outputStates',  # noqa: E501
         'id': 'id',  # noqa: E501
@@ -114,12 +114,12 @@ class NetCordaCoreTransactionsBaseTransaction(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, inputs, references, outputs, output_states, id, *args, **kwargs):  # noqa: E501
+    def __init__(self, references, inputs, outputs, output_states, id, *args, **kwargs):  # noqa: E501
         """NetCordaCoreTransactionsBaseTransaction - a model defined in OpenAPI
 
         Args:
-            inputs ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]):
             references ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]):
+            inputs ([{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]):
             outputs ([NetCordaCoreContractsTransactionStateNetCordaCoreContractsContractState]):
             output_states ([NetCordaCoreContractsContractState]):
             id (str): Base 58 Encoded Secure Hash
@@ -181,8 +181,8 @@ class NetCordaCoreTransactionsBaseTransaction(ModelNormal):
         self._configuration = _configuration
         self._visited_composed_classes = _visited_composed_classes + (self.__class__,)
 
-        self.inputs = inputs
         self.references = references
+        self.inputs = inputs
         self.outputs = outputs
         self.output_states = output_states
         self.id = id

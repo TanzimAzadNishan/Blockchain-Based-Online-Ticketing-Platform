@@ -3,8 +3,8 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**inputs** | **[{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]** |  | 
 **references** | **[{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]** |  | 
+**inputs** | **[{str: (bool, date, datetime, dict, float, int, list, str, none_type)}]** |  | 
 **outputs** | [**[NetCordaCoreContractsTransactionStateNetCordaCoreContractsContractState]**](NetCordaCoreContractsTransactionStateNetCordaCoreContractsContractState.md) |  | 
 **output_states** | [**[NetCordaCoreContractsContractState]**](NetCordaCoreContractsContractState.md) |  | 
 **id** | **str** | Base 58 Encoded Secure Hash | 

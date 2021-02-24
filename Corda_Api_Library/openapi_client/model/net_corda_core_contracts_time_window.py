@@ -71,8 +71,8 @@ class NetCordaCoreContractsTimeWindow(ModelNormal):
                 and the value is attribute type.
         """
         return {
-            'from_time': (str,),  # noqa: E501
             'midpoint': (str,),  # noqa: E501
+            'from_time': (str,),  # noqa: E501
             'until_time': (str,),  # noqa: E501
         }
 
@@ -82,8 +82,8 @@ class NetCordaCoreContractsTimeWindow(ModelNormal):
 
 
     attribute_map = {
-        'from_time': 'fromTime',  # noqa: E501
         'midpoint': 'midpoint',  # noqa: E501
+        'from_time': 'fromTime',  # noqa: E501
         'until_time': 'untilTime',  # noqa: E501
     }
 
@@ -133,8 +133,8 @@ class NetCordaCoreContractsTimeWindow(ModelNormal):
                                 Animal class but this time we won't travel
                                 through its discriminator because we passed in
                                 _visited_composed_classes = (Animal,)
-            from_time (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
             midpoint (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
+            from_time (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
             until_time (str): JSR310 encoded time representation of Instant. [optional]  # noqa: E501
         """
 

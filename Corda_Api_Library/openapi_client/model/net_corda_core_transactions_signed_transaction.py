@@ -90,8 +90,8 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
         return {
             'sigs': ([NetCordaCoreCryptoTransactionSignature],),  # noqa: E501
             'id': (str,),  # noqa: E501
-            'inputs': ([NetCordaCoreContractsStateRef],),  # noqa: E501
             'references': ([NetCordaCoreContractsStateRef],),  # noqa: E501
+            'inputs': ([NetCordaCoreContractsStateRef],),  # noqa: E501
             'notary_change_transaction': (bool,),  # noqa: E501
             'missing_signers': ([str],),  # noqa: E501
             'tx_bits': (NetCordaCoreSerializationSerializedBytesNetCordaCoreTransactionsCoreTransaction,),  # noqa: E501
@@ -109,8 +109,8 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
     attribute_map = {
         'sigs': 'sigs',  # noqa: E501
         'id': 'id',  # noqa: E501
-        'inputs': 'inputs',  # noqa: E501
         'references': 'references',  # noqa: E501
+        'inputs': 'inputs',  # noqa: E501
         'notary_change_transaction': 'notaryChangeTransaction',  # noqa: E501
         'missing_signers': 'missingSigners',  # noqa: E501
         'tx_bits': 'txBits',  # noqa: E501
@@ -132,14 +132,14 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
     ])
 
     @convert_js_args_to_python_args
-    def __init__(self, sigs, id, inputs, references, notary_change_transaction, missing_signers, *args, **kwargs):  # noqa: E501
+    def __init__(self, sigs, id, references, inputs, notary_change_transaction, missing_signers, *args, **kwargs):  # noqa: E501
         """NetCordaCoreTransactionsSignedTransaction - a model defined in OpenAPI
 
         Args:
             sigs ([NetCordaCoreCryptoTransactionSignature]):
             id (str): Base 58 Encoded Secure Hash
-            inputs ([NetCordaCoreContractsStateRef]):
             references ([NetCordaCoreContractsStateRef]):
+            inputs ([NetCordaCoreContractsStateRef]):
             notary_change_transaction (bool):
             missing_signers ([str]):
 
@@ -206,8 +206,8 @@ class NetCordaCoreTransactionsSignedTransaction(ModelNormal):
 
         self.sigs = sigs
         self.id = id
-        self.inputs = inputs
         self.references = references
+        self.inputs = inputs
         self.notary_change_transaction = notary_change_transaction
         self.missing_signers = missing_signers
         for var_name, var_value in kwargs.items():

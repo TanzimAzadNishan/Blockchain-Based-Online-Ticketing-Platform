@@ -5,8 +5,8 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **sigs** | [**[NetCordaCoreCryptoTransactionSignature]**](NetCordaCoreCryptoTransactionSignature.md) |  | 
 **id** | **str** | Base 58 Encoded Secure Hash | 
-**inputs** | [**[NetCordaCoreContractsStateRef]**](NetCordaCoreContractsStateRef.md) |  | 
 **references** | [**[NetCordaCoreContractsStateRef]**](NetCordaCoreContractsStateRef.md) |  | 
+**inputs** | [**[NetCordaCoreContractsStateRef]**](NetCordaCoreContractsStateRef.md) |  | 
 **notary_change_transaction** | **bool** |  | 
 **missing_signers** | **[str]** |  | 
 **tx_bits** | [**NetCordaCoreSerializationSerializedBytesNetCordaCoreTransactionsCoreTransaction**](NetCordaCoreSerializationSerializedBytesNetCordaCoreTransactionsCoreTransaction.md) |  | [optional] 
