@@ -89,7 +89,7 @@ class VendorDashboardView(View):
 
 class IssueTicketView(View):
 
-    async def post(self, request):
+    def post(self, request):
 
         group_name = request.POST.get('group_name')
         vendor_id = request.session.get('user_id')
@@ -100,6 +100,8 @@ class IssueTicketView(View):
         timestamp = request.POST.get('datetime')
         price = request.POST.get('price')
         price = int(price)
+
+        event_unique_hash = ""
 
         with openapi_client.ApiClient() as api_client:
             # Create an instance of the API class
@@ -114,13 +116,13 @@ class IssueTicketView(View):
             )  # GeneratedFlowsEventRegisterFlowEventRegisterFlowInitiatorPayload | payload
 
             try:
-                api_response = api_instance.cordapps_cor_dapp_flows_flows_event_register_flow_event_register_flow_initiator(
-                    generated_flows_event_register_flow_event_register_flow_initiator_payload)
+                api_response = api_instance.cordapps_cor_dapp_flows_flows_event_register_flow_event_register_flow_initiator(generated_flows_event_register_flow_event_register_flow_initiator_payload)
+                event_unique_hash = api_response["id"]
                 pprint(api_response)
             except openapi_client.ApiException as e:
                 print("Exception when calling CordappsApi->cordapps_cor_dapp_flows_flows_event_register_flow_event_register_flow_initiator: %s\n" % e)
 
-        event_unique_hash = api_response["id"]
+                
 
         # Enter a context with an instance of the API client
         with openapi_client.ApiClient() as api_client:
@@ -142,8 +144,7 @@ class IssueTicketView(View):
             )
 
             try:
-                api_response = api_instance.cordapps_cor_dapp_flows_flows_ticket_issue_flow_ticket_issue_flow_initiator(
-                    generated_flows_ticket_issue_flow_ticket_issue_flow_initiator_payload)
+                api_response = api_instance.cordapps_cor_dapp_flows_flows_ticket_issue_flow_ticket_issue_flow_initiator(generated_flows_ticket_issue_flow_ticket_issue_flow_initiator_payload)
                 pprint(api_response)
             except openapi_client.ApiException as e:
                 print("Exception when calling CordappsApi->cordapps_cor_dapp_flows_flows_ticket_issue_flow_ticket_issue_flow_initiator: %s\n" % e)
@@ -188,10 +189,8 @@ class IssuedTicketGroupView(View):
             )  # GeneratedQueryFlowsEventInfoByVendorEventInfoByVendorInitiatorPayload | payload
 
             try:
-                api_response = api_instance.cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator(
-                    generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload)
+                api_response = api_instance.cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator(generated_query_flows_event_info_by_vendor_event_info_by_vendor_initiator_payload)
                 pprint(api_response)
-                print(api_response.readable())
 
             except openapi_client.ApiException as e:
                 print("Exception when calling CordappsApi->cordapps_cor_dapp_flows_query_flows_event_info_by_vendor_event_info_by_vendor_initiator: %s\n" % e)
