@@ -17,10 +17,10 @@ Issue New Tickets
 
 <div class="card-holder">
     <div class="card">
-        <p class="card-header" style="font-size: 20px;">{{ item.name }}</p>
+        <p class="card-header" style="font-size: 20px;">Event Name: {{ item.name }}</p>
         <div class="card-body">
-            <h5 class="card-title">#{{ item.unique_hash }}</h5>
-            <h6 class="card-title">Total Tickets: {{ item.n_ticket }}</h6>
+            <h5 class="card-title"><b>Group Unique ID:</b> {{ item.unique_hash }}</h5>
+            <h6 class="card-title">Total Issued Tickets: {{ item.n_ticket }}</h6>
             <p class="card-text">Date & Time: {{ item.datetime }}   |   Price: {{ item.price }}</p>
             <a href="#" class="btn btn-warning">View Tickets</a>
         </div>

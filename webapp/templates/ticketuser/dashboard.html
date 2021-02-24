@@ -2,21 +2,30 @@
 {% load static %}
 
 {% block title %}
-Dashboard
+Dashboard | User
 {% endblock %}
 
 
 {% block headline %}
-Dashboard
+Dashboard | User
 {% endblock %}
+
 
 {% block content %}
 
 {% if messages %}
     {% for msg in messages %}
-    <div class="message-box-{{ msg.tags }}">{{ msg }}</div>
+        <div class="message-box-{{ msg.tags }}">{{ msg }}</div>
     {% endfor %}
-    {% endif %}
+{% endif %}
+
+
+<div style="margin-top: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
+    <h6 style="text-align: center;">
+        <b>Account Unique ID:</b> {{ request.session.user_hash }}
+    </h6>
+</div>
+
 
 <div style="margin-top: 20px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; ">
     <h4 style="text-align: center;">
