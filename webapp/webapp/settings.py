@@ -131,3 +131,5 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     "static"
 ]
+
+CORDA_API_HOST = "http://192.168.0.109:9004/api/rest"

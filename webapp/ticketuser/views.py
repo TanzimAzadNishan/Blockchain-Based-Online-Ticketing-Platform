@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import TicketUser
 
 from core.utils import check_ticketuser
+from webapp.settings import CORDA_API_HOST
 
 import hashlib
 import time
@@ -15,9 +16,7 @@ from openapi_client.model.invocation_error import InvocationError
 from pprint import pprint
 # Defining the host is optional and defaults to http://localhost:9004/api/rest
 # See configuration.py for a list of all supported configuration parameters.
-configuration = openapi_client.Configuration(
-    host="http://localhost:9004/api/rest"
-)
+configuration = openapi_client.Configuration(host=CORDA_API_HOST)
 
 
 class TicketUserDashboardView(View):
@@ -39,7 +38,7 @@ class TicketUserSignUpView(View):
             try:
                 api_response = api_instance.cordapps_cor_dapp_flows_flows_user_register_flow_user_register_flow_initiator(body)
                 pprint(api_response)
-                print()
+                print(type(api_response))
                 print()
                 print(api_response)
                 print()
@@ -50,6 +49,7 @@ class TicketUserSignUpView(View):
         password = request.POST.get('password')
         password = hashlib.sha256(password.encode()).hexdigest()
         full_name = request.POST.get('full_name')
+        unique_hash = api_response["id"]
 
         email_count = TicketUser.objects.filter(email=email)
         email_count = len(email_count)
@@ -60,7 +60,7 @@ class TicketUserSignUpView(View):
 
         else:
             ticket_user = TicketUser(
-                email=email, password=password, full_name=full_name)
+                email=email, password=password, full_name=full_name, unique_hash=unique_hash)
             ticket_user.save()
             print(ticket_user)
             messages.success(request, "An account has been created !")
