@@ -11,4 +11,4 @@ class TicketUser(models.Model):
     unique_hash = models.TextField()
 
     def __str__(self):
-        return "Ticket Userid: {}".format(self.id)
+        return "Ticketuser id: {}  Hash: {}".format(self.id, self.unique_hash)

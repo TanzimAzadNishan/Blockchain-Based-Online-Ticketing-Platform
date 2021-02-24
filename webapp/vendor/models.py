@@ -20,5 +20,5 @@ class Vendor(models.Model):
     unique_hash = models.TextField()
 
     def __str__(self):
-        return "Vendorid: {}".format(self.id)
+        return "Vendorid: {}  Hash: {}".format(self.id, self.unique_hash)
         

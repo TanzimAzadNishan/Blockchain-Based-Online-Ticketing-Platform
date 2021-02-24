@@ -39,7 +39,8 @@ class UserLoginView(View):
                     print(ticket_user[0])
                     request.session['user_type'] = user_type
                     request.session['user_id'] = ticket_user[0].id
-                    
+                    request.session['user_hash'] = ticket_user[0].unique_hash
+
                     messages.success(request, "Welcome Customer!")
                     return redirect('ticketuser-dashboard-view')
 
@@ -56,10 +57,12 @@ class UserLoginView(View):
 
             else:
                 if vendor[0].password == password:
+
                     print(vendor[0])
                     request.session['user_type'] = user_type
                     request.session['user_id'] = vendor[0].id
-                
+                    request.session['user_hash'] = vendor[0].unique_hash
+
                     messages.success(request, "Welcome Vendor!")
                     return redirect('vendor-dashboard-view')
 
